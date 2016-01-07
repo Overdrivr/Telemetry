@@ -1,4 +1,4 @@
-apply plugin: 'c'
+apply plugin: 'cpp'
 
 model {
     buildTypes {
@@ -13,14 +13,19 @@ model {
     }
 
 
-    components {
-     telemetry(NativeLibrarySpec) {
-
-    	}
-      main(NativeExecutableSpec) {
+  components {
+    telemetry(NativeLibrarySpec) {
+      
+    }
+    main(NativeExecutableSpec) {
         binaries.all {
           lib library: "telemetry"
         }
-	   }
+	  }
+    tests(NativeExecutableSpec) {
+       binaries.all {
+         lib library: "telemetry"
+       }
+     }
    }
 }
