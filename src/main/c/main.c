@@ -1,36 +1,36 @@
 #include "telemetry.h"
 
-struct parameters {
+struct TM_state {
   float P;
-}
+};
 
-void P(state* s, message* m){
+void callback(TM_state* s, TM_msg* m){
   // Check message is of expected type
-  if(m->type == type::float32){
+  if(m->type == TM_float32){
     // Then put the received message (a value) into a variable
     float value;
-    if(emplace(m, &value))
+    if(emplace_f32(m, &value))
     {
       // If everything went well, store it the state
       // the new value will then be accessible in the main with parameters->P
-      state->P = value;
+      s->P = value;
     }
   }
 }
 
 int main()
 {
-  parameters p;
+  TM_state p;
   int32_t d = 1.f;
 
   initTelemetry(&p);
 
-  subscribe("Proportional",P);
+  subscribe("Proportional",callback);
 
   for( ; ; )
   {
-    d = parameters->P;
-    publish("Derivative", d);
+    d = p.P;
+    publish_i32("Derivative", d);
     update(0);
   }
 
