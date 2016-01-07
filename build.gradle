@@ -6,6 +6,13 @@ model {
         release
     }
 
+    toolChains {
+      gcc(Gcc) {
+
+      }
+    }
+
+
     components {
      telemetry(NativeLibrarySpec) {
 
