@@ -1,0 +1,19 @@
+apply plugin: 'c'
+
+model {
+    buildTypes {
+        debug
+        release
+    }
+
+    components {
+     telemetry(NativeLibrarySpec) {
+
+    	}
+      main(NativeExecutableSpec) {
+        binaries.all {
+          lib library: "telemetry"
+        }
+	   }
+   }
+}
