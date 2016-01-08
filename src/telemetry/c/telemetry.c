@@ -90,7 +90,7 @@ void subscribe(char * topic, void (*callback)(TM_state* s, TM_msg* m))
 
 }
 
-void update(float elapsedTime)
+void updateTelemetry(float elapsedTime)
 {
 
 }
