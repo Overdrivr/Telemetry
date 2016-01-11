@@ -1,6 +1,9 @@
 #ifndef FRAMING_H_
 #define FRAMING_H_
 
+#include "stddef.h"
+#include "stdint.h"
+
 void initialize_framing();
 // Outgoing data
 // Set storage for the outgoing frame
