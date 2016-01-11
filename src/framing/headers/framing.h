@@ -13,8 +13,7 @@ void end();
 // Set storage for the incoming data
 void incoming_storage(void * buf, uint32_t bufSize);
 
-void set_on_incoming_frame(callback);
-void set_on_incoming_error(callback);
+void set_on_incoming_frame(void (*callback)(void * storage, uint32_t occupiedSize));
+void set_on_incoming_error(void (*callback)(int32_t errCode));
 void feed(char c);
-
 #endif
