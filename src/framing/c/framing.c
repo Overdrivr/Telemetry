@@ -15,7 +15,7 @@ struct storage
    uint32_t size;
    uint32_t cursor;
 
-}
+};
 
 static storage incomingStorage;
 static storage outgoingStorage;
@@ -26,7 +26,7 @@ static uint8_t SOF_;
 static uint8_t EOF_;
 static uint8_t ESC_;
 
-static _state incoming_state
+static _state incoming_state;
 
 void (*on_incoming_frame_cb)(uint8_t * storage, uint32_t occupiedSize);
 void (*on_error_cb)(int32_t errCode);
@@ -63,7 +63,7 @@ void begin()
   outgoingStorage.cursor = 0;
 
   // Should not fail
-  safe_append(outgoingStorage,SOF_);
+  safe_append(&outgoingStorage,SOF_);
 }
 
 void append(uint8_t byte)
@@ -74,11 +74,11 @@ void append(uint8_t byte)
   // byte == to flag, need to escape it
   if(byte == SOF_ || byte == EOF_ || byte == ESC_)
   {
-    if(!safe_append(outgoingStorage,ESC_))
+    if(!safe_append(&outgoingStorage,ESC_))
       return;
   }
 
-  if(!safe_append(outgoingStorage,byte))
+  if(!safe_append(&outgoingStorage,byte))
     return;
 }
 
@@ -87,14 +87,14 @@ void end()
   if(outgoingStorage.size == 0 || outgoingStorage.ptr == NULL)
     return;
 
-  if(!safe_append(outgoingStorage,EOF_))
+  if(!safe_append(&outgoingStorage,EOF_))
     return;
 }
 
 void incoming_storage(uint8_t * buf, uint32_t bufSize)
 {
   incomingStorage.ptr = buf;
-  incomoingStorage.size = bufSize;
+  incomingStorage.size = bufSize;
 }
 
 void set_on_incoming_frame(void (*callback)(uint8_t * storage, uint32_t occupiedSize))
@@ -114,7 +114,7 @@ void feed(uint8_t byte)
 
   if(incoming_state == IDLE)
   {
-    if(byte == _SOF)
+    if(byte == SOF_)
     {
         incoming_state = ACTIVE;
         incomingStorage.cursor = 0;
@@ -124,7 +124,7 @@ void feed(uint8_t byte)
 
   if(incoming_state == ESCAPING)
   {
-    if(!safe_append(incomingStorage,byte))
+    if(!safe_append(&incomingStorage,byte))
     {
       incoming_state = IDLE;
     }
@@ -134,19 +134,19 @@ void feed(uint8_t byte)
 
   if(incoming_state == ACTIVE)
   {
-    if(byte == _EOF)
+    if(byte == EOF_)
     {
-        protocol_state = IDLE;
-        on_incoming_frame_cb(incomingStorage.ptr, incomingStorage.cursor)
+        incoming_state = IDLE;
+        on_incoming_frame_cb(incomingStorage.ptr, incomingStorage.cursor);
     }
     // Escape next character
-    else if(byte == _ESC)
+    else if(byte == ESC_)
     {
-        protocol_state = ESCAPING;
+        incoming_state = ESCAPING;
     }
     else
     {
-      if(!safe_append(incomingStorage,byte))
+      if(!safe_append(&incomingStorage,byte))
       {
         incoming_state = IDLE;
       }
@@ -158,9 +158,9 @@ void feed(uint8_t byte)
 int8_t safe_append(storage * s, uint8_t byte)
 {
   // Not enough space for 1 more character
-  if(s.cursor + 1 >= s.size)
+  if(s->cursor + 1 >= s->size)
     return -1;
 
-  s[s.cursor++] = byte;
+  s->ptr[s->cursor++] = byte;
   return 0;
 }
