@@ -26,9 +26,19 @@ struct TM_msg {
   void * buffer;
 };
 
-TM_state * statePtr;
+// Data structure for holding transport interface
+typedef struct TM_transport TM_transport;
+struct TM_transport {
+  int32_t (*read)(void * buf, uint32_t sizeToRead);
+  int32_t (*readable)();
+  int32_t (*write)(void * buf, uint32_t sizeToWrite);
+  int32_t (*writeable)();
+}
 
-void initTelemetry(TM_state* s);
+TM_state * statePtr;
+TM_transport * transportPtr;
+
+void init_telemetry(TM_state * s, TM_transport * t);
 
 // Decodes TM_msg buffer and emplaces its value into dst
 // Returns 0 if decoding was successful
@@ -52,6 +62,6 @@ void publish_f32(const char * topic, float    msg);
 
 void subscribe(char * topic, void (*callback)(TM_state* s, TM_msg* m));
 
-void update(float elapsedTime);
+void update_telemetry(float elapsedTime);
 
 #endif
