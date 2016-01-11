@@ -1,16 +1,6 @@
 #ifndef FRAMING_H_
 #define FRAMING_H_
 
-uint8_t * incomingStoragePtr;
-uint8_t * outgoingStoragePtr;
-
-uint32_t incomingCursor;
-uint32_t outgoingCursor;
-
-uint8_t SOF_;
-uint8_t EOF_;
-uint8_t ESC_;
-
 void initialize_framing();
 // Outgoing data
 // Set storage for the outgoing frame
