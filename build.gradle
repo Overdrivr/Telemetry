@@ -17,14 +17,19 @@ model {
     telemetry(NativeLibrarySpec) {
 
     }
+    framing(NativeLibrarySpec) {
+
+    }
     main(NativeExecutableSpec) {
         binaries.all {
           lib library: "telemetry"
+          lib library: "framing"
         }
 	  }
     tests(NativeExecutableSpec) {
        binaries.all {
          lib library: "telemetry"
+         lib library: "framing"
        }
      }
    }
