@@ -11,9 +11,9 @@ TEST emplace_string()
 
   char destination[32];
 
-  uint32_t size = emplace(&dummy, destination, 32);
+  emplace(&dummy, destination, 32);
 
-  ASSERT_EQ_FMT(size, strlen(buf),"%d");
+  ASSERT_EQ_FMT(strlen(destination), strlen(buf),"%d");
   ASSERT_STR_EQ(destination, buf);
 
   PASS();
@@ -29,9 +29,9 @@ TEST emplace_string_exact_fit()
 
   char destination[14];
 
-  uint32_t size = emplace(&dummy, destination, 14);
+  emplace(&dummy, destination, 14);
 
-  ASSERT_EQ_FMT(size, strlen(buf),"%d");
+  ASSERT_EQ_FMT(strlen(destination), strlen(buf),"%d");
   ASSERT_STR_EQ(destination, buf);
 
   PASS();
@@ -51,17 +51,14 @@ TEST emplace_string_truncated()
 
   char expected[] = "Hello, Wo";
 
-  ASSERT_EQ_FMT(size, strlen(expected),"%d");
+  ASSERT_EQ_FMT(strlen(destination), strlen(expected),"%d");
   ASSERT_STR_EQ(destination, expected);
 
   PASS();
 }
 
-//emplace_string_truncated
-
-/* Suites can group multiple tests with common setup. */
 SUITE(emplace_message_suite) {
-    RUN_TEST(emplace_string);
-    RUN_TEST(emplace_string_exact_fit);
-    RUN_TEST(emplace_string_truncated);
+  RUN_TEST(emplace_string);
+  RUN_TEST(emplace_string_exact_fit);
+  RUN_TEST(emplace_string_truncated);
 }
