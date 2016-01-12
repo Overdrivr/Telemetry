@@ -1,20 +1,25 @@
 #include "telemetry.h"
+#include "framing.h"
+#include "crc16.h"
 #include "string.h"
 
 static TM_state * statePtr;
 static TM_transport * transportPtr;
-static incomingBuffer[INCOMING_BUFFER_SIZE];
-static outgoingBuffer[OUTGOING_BUFFER_SIZE];
+static uint8_t incomingBuffer[INCOMING_BUFFER_SIZE];
+static uint8_t outgoingBuffer[OUTGOING_BUFFER_SIZE];
 
 uint16_t header(TM_type type);
-uint16_t topic(char * topic, uint16_t crc);
-uint16_t payload(void * payload, uint32_t size);
+uint16_t topic(const char * topic, uint16_t crc);
+uint16_t payload(const void * payload, uint32_t size, uint16_t crc);
 void send(void * buf, uint32_t size);
 
 void init_telemetry(TM_state* s, TM_transport * t)
 {
   statePtr = s;
   transportPtr = t;
+  initialize_framing();
+  incoming_storage(incomingBuffer,INCOMING_BUFFER_SIZE);
+  outgoing_storage(outgoingBuffer, OUTGOING_BUFFER_SIZE);
 }
 
 uint32_t emplace(TM_msg* m, char * buf, size_t bufSize)
@@ -96,18 +101,19 @@ uint32_t emplace_f32(TM_msg* m, float* dst)
   return 0;
 }
 
-void publish(const char * topic, char * msg)
+void publish(const char * t, char * msg)
 {
   // start new frame
   begin();
+
   // header
   uint16_t crc = header(TM_string);
 
   // topic
-  crc = topic(topic, crc);
+  crc = topic(t, crc);
 
   // payload
-  crc = payload(msg, crc);
+  crc = payload(msg, strlen(msg), crc);
 
   // crc
   append2(crc);
@@ -119,42 +125,42 @@ void publish(const char * topic, char * msg)
   send(outgoingBuffer, bytesAmount);
 }
 
-void publish_u8(const char * topic, uint8_t  msg)
+void publish_u8(const char * t, uint8_t  msg)
 {
 
 }
 
-void publish_u16(const char * topic, uint16_t msg)
+void publish_u16(const char * t, uint16_t msg)
 {
 
 }
 
-void publish_u32(const char * topic, uint32_t msg)
+void publish_u32(const char * t, uint32_t msg)
 {
 
 }
 
-void publish_i8(const char * topic, int8_t   msg)
+void publish_i8(const char * t, int8_t   msg)
 {
 
 }
 
-void publish_i16(const char * topic, int16_t  msg)
+void publish_i16(const char * t, int16_t  msg)
 {
 
 }
 
-void publish_i32(const char * topic, int32_t  msg)
+void publish_i32(const char * t, int32_t  msg)
 {
 
 }
 
-void publish_f32(const char * topic, float    msg)
+void publish_f32(const char * t, float    msg)
 {
 
 }
 
-void subscribe(char * topic, void (*callback)(TM_state* s, TM_msg* m))
+void subscribe(char * t, void (*callback)(TM_state* s, TM_msg* m))
 {
 
 }
@@ -167,38 +173,43 @@ void update_telemetry(float elapsedTime)
 uint16_t header(TM_type type)
 {
   // header data
-  uint16_t header = type;
+  uint16_t h = type;
+  uint8_t * ptr = (uint8_t*)(&h);
+
   // add data to frame
-  append2(header);
+  append(h);
+
   // compute crc and return it
-  return crc16((uint8_t*)header, 2);
+  return crc16(ptr, 2);
 }
 
-uint16_t topic(char * topic, uint16_t crc)
+uint16_t topic(const char * t, uint16_t crc)
 {
-  for(uint16_t i = 0 ; i < strlen(topic) ; i++)
+  const uint8_t * ptr = (uint8_t*)t;
+  for(uint32_t i = 0 ; i < strlen(t) ; i++)
   {
     // TODO : Replace with Huffman compression
-    append((uint8_t)topic[i]);
-    crc = crc16_recursive((uint8_t)topic[i], crc);
+    append(ptr[i]);
+    crc = crc16_recursive(ptr[i], crc);
   }
   return crc;
 }
 
-uint16_t payload(void * payload, uint32_t size)
+uint16_t payload(const void * p, uint32_t size, uint16_t crc)
 {
-  for(uint16_t i = 0 ; i < strlen(topic) ; i++)
+  const uint8_t * ptr = (uint8_t*)p;
+  for(uint32_t i = 0 ; i < size ; i++)
   {
-    append((uint8_t)payload[i]);
-    crc = crc16_recursive((uint8_t)payload[i], crc);
+    append(ptr[i]);
+    crc = crc16_recursive(ptr[i], crc);
   }
   return crc;
 }
 
 void send(void * buf, uint32_t size)
 {
-  if(transportPtr->writeable() && bytesAmount > 0)
+  if(transportPtr->writeable() && size > 0)
   {
-    transportPtr->write(outgoingBuffer, bytesAmount);
+    transportPtr->write(outgoingBuffer, size);
   }
 }
