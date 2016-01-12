@@ -11,8 +11,6 @@ model {
 
       }
     }
-
-
   components {
     telemetry(NativeLibrarySpec) {
 
@@ -20,16 +18,21 @@ model {
     crc(NativeLibrarySpec){
 
     }
+    framing(NativeLibrarySpec) {
+
+    }
     main(NativeExecutableSpec) {
         binaries.all {
           lib library: "telemetry"
           lib library: "crc"
+          lib library: "framing"
         }
 	  }
     tests(NativeExecutableSpec) {
        binaries.all {
          lib library: "telemetry"
          lib library: "crc"
+         lib library: "framing"
        }
      }
    }
