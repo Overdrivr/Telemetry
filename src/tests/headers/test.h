@@ -1,3 +1,6 @@
-unsigned int Factorial( unsigned int number ) {
-    return number <= 1 ? number : Factorial(number-1)*number;
-}
+#ifndef TEST_H_
+#define TEST_H_
+
+#include "greatest.h"
+
+#endif
