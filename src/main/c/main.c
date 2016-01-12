@@ -16,20 +16,46 @@ void callback(TM_state* s, TM_msg* m)
   }
 }
 
+int32_t read(void * buf, uint32_t sizeToRead)
+{
+
+}
+
+int32_t readable()
+{
+
+}
+
+int32_t write(void * buf, uint32_t sizeToWrite)
+{
+
+}
+
+int32_t writeable()
+{
+
+}
+
 int main()
 {
-  TM_state p;
-  int32_t d = 1.f;
+  TM_state state;
+  TM_transport transport;
+  transport.read = read;
+  transport.write = write;
+  transport.readable = readable;
+  transport.writeable = writeable;
 
-  initTelemetry(&p);
+  init_telemetry(&state, &transport);
+
+  int32_t d = 1.f;
 
   subscribe("Proportional",callback);
 
   for( ; ; )
   {
-    d = p.P;
+    d = state.P;
     publish_i32("Derivative", d);
-    update(0);
+    update_telemetry(0);
   }
 
   return 0;

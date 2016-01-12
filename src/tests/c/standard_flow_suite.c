@@ -10,11 +10,38 @@ void callback(TM_state* s, TM_msg* m)
   s->called = 1;
 }
 
+
+int32_t read(void * buf, uint32_t sizeToRead)
+{
+
+}
+
+int32_t readable()
+{
+
+}
+
+int32_t write(void * buf, uint32_t sizeToWrite)
+{
+
+}
+
+int32_t writeable()
+{
+
+}
+
 TEST subscribed_topic_should_trigger_callback()
 {
   TM_state state;
 
-  initTelemetry(&state);
+  TM_transport transport;
+  transport.read = read;
+  transport.write = write;
+  transport.readable = readable;
+  transport.writeable = writeable;
+
+  init_telemetry(&state,&transport);
 
   // TODO : Mock of shunt-transport
 
@@ -24,7 +51,7 @@ TEST subscribed_topic_should_trigger_callback()
 
   publish("topic", "someMessage");
 
-  updateTelemetry(0);
+  update_telemetry(0);
 
   ASSERT_EQ(state.called, 1);
 
@@ -35,7 +62,13 @@ TEST non_subscribed_topic_should_not_trigger_callback()
 {
   TM_state state;
 
-  initTelemetry(&state);
+  TM_transport transport;
+  transport.read = read;
+  transport.write = write;
+  transport.readable = readable;
+  transport.writeable = writeable;
+
+  init_telemetry(&state,&transport);
 
   // TODO : Mock of shunt-transport
 
@@ -45,7 +78,7 @@ TEST non_subscribed_topic_should_not_trigger_callback()
 
   publish("otherTopic", "someMessage");
 
-  updateTelemetry(0);
+  update_telemetry(0);
 
   ASSERT_EQ(state.called, 0);
 
