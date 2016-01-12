@@ -4,6 +4,9 @@
 #include "stddef.h"
 #include "stdint.h"
 
+#define INCOMING_BUFFER_SIZE 128
+#define OUTGOING_BUFFER_SIZE 128
+
 // Forward declaration of user state
 typedef struct TM_state TM_state;
 
