@@ -1,6 +1,6 @@
-#include "crc.h"
+#include "crc16.h"
 
-uint16_t crc16(uint8_t* data, uint16_t len)
+uint16_t crc16(uint8_t* data, uint32_t len)
 {
 	uint16_t rem  = 0;
 	for(uint16_t i = 0 ; i < len ; i++)
@@ -9,7 +9,6 @@ uint16_t crc16(uint8_t* data, uint16_t len)
 	}
   return rem;
  }
-
 
 uint16_t crc16_recursive(uint8_t byte, uint16_t remainder)
 {
