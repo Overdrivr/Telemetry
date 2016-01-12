@@ -84,16 +84,18 @@ void append(uint8_t byte)
 
 void append2(uint16_t twobytes)
 {
-  append((uint8_t*)((&twobytes)    ));
-  append((uint8_t*)((&twobytes) + 1));
+  uint8_t * ptr = (uint8_t*)(&twobytes);
+  append(ptr[0]);
+  append(ptr[1]);
 }
 
 void append4(uint32_t fourbytes)
 {
-  append((uint8_t*)((&fourbytes)    ));
-  append((uint8_t*)((&fourbytes) + 1));
-  append((uint8_t*)((&fourbytes) + 2));
-  append((uint8_t*)((&fourbytes) + 3));
+  uint8_t * ptr = (uint8_t*)(&fourbytes);
+  append(ptr[0]);
+  append(ptr[1]);
+  append(ptr[2]);
+  append(ptr[3]);
 }
 
 uint32_t end()
@@ -175,8 +177,9 @@ int8_t safe_append(storage * s, uint8_t byte)
 {
   // Not enough space for 1 more character
   if(s->cursor + 1 >= s->size)
-    return -1;
+    return 0;
 
   s->ptr[s->cursor++] = byte;
-  return 0;
+
+  return 1;
 }
