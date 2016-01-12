@@ -82,13 +82,29 @@ void append(uint8_t byte)
     return;
 }
 
-void end()
+void append2(uint16_t twobytes)
+{
+  append((uint8_t*)((&twobytes)    ));
+  append((uint8_t*)((&twobytes) + 1));
+}
+
+void append4(uint32_t fourbytes)
+{
+  append((uint8_t*)((&fourbytes)    ));
+  append((uint8_t*)((&fourbytes) + 1));
+  append((uint8_t*)((&fourbytes) + 2));
+  append((uint8_t*)((&fourbytes) + 3));
+}
+
+uint32_t end()
 {
   if(outgoingStorage.size == 0 || outgoingStorage.ptr == NULL)
-    return;
+    return 0;
 
   if(!safe_append(&outgoingStorage,EOF_))
-    return;
+    return 0;
+
+  return outgoingStorage.cursor;
 }
 
 void incoming_storage(uint8_t * buf, uint32_t bufSize)

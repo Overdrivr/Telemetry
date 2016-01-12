@@ -11,7 +11,9 @@ void outgoing_storage(uint8_t * buf, uint32_t bufSize);
 
 void begin();
 void append(uint8_t byte);
-void end();
+void append2(uint16_t twobytes);
+void append4(uint32_t fourbytes);
+uint32_t end();
 
 // Incoming data
 // Set storage for the incoming data
