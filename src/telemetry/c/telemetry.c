@@ -13,7 +13,7 @@ void init_telemetry(TM_state* s, TM_transport * t)
 uint32_t emplace(TM_msg* m, char * buf, size_t bufSize)
 {
   if(m->type != TM_string)
-    return 0;
+    return 1;
 
   uint32_t size = m->size;
 
@@ -23,42 +23,70 @@ uint32_t emplace(TM_msg* m, char * buf, size_t bufSize)
   strncpy(buf, (char*)(m->buffer), size);
   buf[size] = '\0';
 
-  return size;
+  return 0;
 }
 
 uint32_t emplace_u8(TM_msg* m, uint8_t* dst)
 {
+  if(m->type != TM_uint8)
+    return 1;
 
+  *dst = *(uint8_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_u16(TM_msg* m, uint16_t* dst)
 {
+  if(m->type != TM_uint16)
+    return 1;
 
+  *dst = *(uint16_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_u32(TM_msg* m, uint32_t* dst)
 {
+  if(m->type != TM_uint32)
+    return 1;
 
+  *dst = *(uint32_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_i8(TM_msg* m, int8_t* dst)
 {
+  if(m->type != TM_int8)
+    return 1;
 
+  *dst = *(int8_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_i16(TM_msg* m, int16_t* dst)
 {
+  if(m->type != TM_int16)
+    return 1;
 
+  *dst = *(int16_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_i32(TM_msg* m, int32_t* dst)
 {
+  if(m->type != TM_int32)
+    return 1;
 
+  *dst = *(int32_t*)(m->buffer);
+  return 0;
 }
 
 uint32_t emplace_f32(TM_msg* m, float* dst)
 {
+  if(m->type != TM_float32)
+    return 1;
 
+  *dst = *(float*)(m->buffer);
+  return 0;
 }
 
 void publish(const char * topic, char *   msg)
