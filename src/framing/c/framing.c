@@ -127,27 +127,25 @@ void set_on_incoming_error(void (*callback)(int32_t errCode))
 
 void feed(uint8_t byte)
 {
-  if(incomingStorage.size == 0 || outgoingStorage.ptr == NULL)
+  if(incomingStorage.size == 0 || incomingStorage.ptr == NULL)
     return;
-
-  if(incoming_state == IDLE)
-  {
-    if(byte == SOF_)
-    {
-        incoming_state = ACTIVE;
-        incomingStorage.cursor = 0;
-    }
-    return;
-  }
 
   if(incoming_state == ESCAPING)
   {
     if(!safe_append(&incomingStorage,byte))
     {
       incoming_state = IDLE;
+      return;
     }
     incoming_state = ACTIVE;
     return;
+  }
+
+  if(byte == SOF_)
+  {
+      incoming_state = ACTIVE;
+      incomingStorage.cursor = 0;
+      return;
   }
 
   if(incoming_state == ACTIVE)
@@ -167,6 +165,7 @@ void feed(uint8_t byte)
       if(!safe_append(&incomingStorage,byte))
       {
         incoming_state = IDLE;
+        return;
       }
       incoming_state = ACTIVE;
     }
