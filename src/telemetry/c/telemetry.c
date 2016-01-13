@@ -8,18 +8,28 @@ static TM_transport * transportPtr;
 static uint8_t incomingBuffer[INCOMING_BUFFER_SIZE];
 static uint8_t outgoingBuffer[OUTGOING_BUFFER_SIZE];
 
+static void (*userCallback)(TM_state * s, TM_msg * m);
+
 uint16_t header(TM_type type);
 uint16_t topic(const char * topic, uint16_t crc);
 uint16_t payload(const void * payload, uint32_t size, uint16_t crc);
 void send(void * buf, uint32_t size);
+void on_incoming_frame(uint8_t * storage, uint32_t size);
+void on_incoming_error(int32_t errCode);
+void emptyCallback(TM_state * s, TM_msg * m);
 
 void init_telemetry(TM_state* s, TM_transport * t)
 {
   statePtr = s;
   transportPtr = t;
+  userCallback = emptyCallback;
+
+  // Setup framing
   initialize_framing();
   incoming_storage(incomingBuffer,INCOMING_BUFFER_SIZE);
   outgoing_storage(outgoingBuffer, OUTGOING_BUFFER_SIZE);
+  set_on_incoming_frame(on_incoming_frame);
+  set_on_incoming_error(on_incoming_error);
 }
 
 uint32_t emplace(TM_msg* m, char * buf, size_t bufSize)
@@ -160,14 +170,20 @@ void publish_f32(const char * t, float    msg)
 
 }
 
-void subscribe(char * t, void (*callback)(TM_state* s, TM_msg* m))
+void subscribe(void (*callback)(TM_state* s, TM_msg* m))
 {
-
+  userCallback = callback;
 }
 
 void update_telemetry(float elapsedTime)
 {
-
+  uint32_t amount = transportPtr->readable();
+  if(amount > 0)
+  {
+    uint8_t c;
+    transportPtr->read(&c,1);
+    feed(c);
+  }
 }
 
 uint16_t header(TM_type type)
@@ -192,7 +208,9 @@ uint16_t topic(const char * t, uint16_t crc)
     append(ptr[i]);
     crc = crc16_recursive(ptr[i], crc);
   }
-  return crc;
+  // Add NULL character
+  append(0);
+  return crc16_recursive(0,crc);
 }
 
 uint16_t payload(const void * p, uint32_t size, uint16_t crc)
@@ -212,4 +230,79 @@ void send(void * buf, uint32_t size)
   {
     transportPtr->write(outgoingBuffer, size);
   }
+}
+
+void on_incoming_frame(uint8_t * storage, uint32_t size)
+{
+  if(size < 2)
+    return;
+  // Read header
+  uint16_t head;
+  uint8_t * ptr;
+  ptr = (uint8_t*)(head);
+  ptr[0] = storage[0];
+  ptr[1] = storage[1];
+
+  // Read topic
+  uint32_t cursor = 2;
+  uint32_t topicSize = 0;
+  while(cursor < size)
+  {
+    if(storage[cursor] == 0)
+    {
+      topicSize = cursor;
+      break;
+    }
+    cursor++;
+  }
+
+  if(topicSize == 0)
+    return;
+
+  // payload = total - header - topic - crc
+  int32_t payloadSize = size - 2 - topicSize - 2;
+
+  if(payloadSize <= 0)
+    return;
+
+  // Check crc
+  uint16_t expected_crc = crc16(storage, size-2);
+  uint16_t rcv_crc;
+  ptr = (uint8_t*)(rcv_crc);
+  ptr[0] = storage[size-2];
+  ptr[1] = storage[size-1];
+
+  if(expected_crc != rcv_crc)
+    return;
+
+  // Store topic
+  char * t = (char *) malloc(topicSize + 1);
+
+  if(t = NULL)
+    return;
+
+  ptr = (uint8_t*)(storage);
+  strcpy(t, ptr + 2);
+
+  TM_msg packet;
+  packet.topic = t;
+  packet.type = head;
+  packet.buffer = storage + 2 + topicSize;
+  packet.size = (uint32_t)payloadSize;
+
+  // Call callback
+  userCallback(statePtr,&packet);
+
+  //
+  free(t);
+}
+
+void on_incoming_error(int32_t errCode)
+{
+  // TODO : Error management
+}
+
+void emptyCallback(TM_state * s, TM_msg * m)
+{
+  // Called only if the user forgot to subscribe a callback
 }
