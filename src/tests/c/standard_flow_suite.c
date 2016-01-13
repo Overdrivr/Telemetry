@@ -31,33 +31,6 @@ int32_t writeable()
 
 }
 
-TEST subscribed_topic_should_trigger_callback()
-{
-  TM_state state;
-
-  TM_transport transport;
-  transport.read = read;
-  transport.write = write;
-  transport.readable = readable;
-  transport.writeable = writeable;
-
-  init_telemetry(&state,&transport);
-
-  // TODO : Mock of shunt-transport
-
-  state.called = 0;
-
-  subscribe("topic",callback);
-
-  publish("topic", "someMessage");
-
-  update_telemetry(0);
-
-  ASSERT_EQ(state.called, 1);
-
-  PASS();
-}
-
 TEST non_subscribed_topic_should_not_trigger_callback()
 {
   TM_state state;
@@ -87,6 +60,5 @@ TEST non_subscribed_topic_should_not_trigger_callback()
 
 /* Suites can group multiple tests with common setup. */
 SUITE(standard_flow_suite) {
-    RUN_TEST(subscribed_topic_should_trigger_callback);
     RUN_TEST(non_subscribed_topic_should_not_trigger_callback);
 }
