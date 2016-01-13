@@ -4,15 +4,19 @@
 /// Mock of transport (serial). write is piped back to read
 static uint8_t endBuffer[OUTGOING_BUFFER_SIZE];
 static uint32_t sizeWritten;
+static uint32_t sizeRead;
 
 int32_t read2(void * buf, uint32_t sizeToRead)
 {
   uint8_t * ptr = (uint8_t*)buf;
-  uint16_t range = sizeToRead > sizeWritten ? sizeWritten : sizeToRead;
+  int32_t rem = sizeWritten - sizeRead;
+  uint16_t range = sizeToRead > rem ? rem : sizeToRead;
   for(uint32_t i = 0 ; i < range ; i++)
   {
-    ptr[i] = endBuffer[i];
+    ptr[i] = endBuffer[sizeRead + i];
+    sizeRead++;
   }
+
 }
 
 int32_t readable2()
@@ -40,6 +44,7 @@ int32_t writeable2()
 struct TM_state {
   uint8_t called;
   char rcvString[OUTGOING_BUFFER_SIZE];
+  char rcvTopic[OUTGOING_BUFFER_SIZE];
 };
 
 void callback2(TM_state* s, TM_msg* m)
@@ -49,18 +54,23 @@ void callback2(TM_state* s, TM_msg* m)
   if(emplace(m,str,OUTGOING_BUFFER_SIZE))
   {
     strcpy(s->rcvString,str);
+    strcpy(s->rcvTopic,m->topic);
   }
 }
 
 TEST publish_string()
 {
+  TM_state state;
+
   for(uint16_t i = 0 ; i < OUTGOING_BUFFER_SIZE ; i++)
   {
     endBuffer[i] = 0;
+    state.rcvTopic[i] = 0;
+    state.rcvString[i] = 0;
   }
   sizeWritten = 0;
-
-  TM_state state;
+  sizeRead = 0;
+  state.called = 0;
 
   TM_transport transport;
   transport.read = read2;
@@ -80,8 +90,8 @@ TEST publish_string()
   update_telemetry(0);
 
   ASSERT_EQ(state.called, 1);
-
   ASSERT_STR_EQ(message,state.rcvString);
+  ASSERT_STR_EQ(topic,state.rcvTopic);
 
   PASS();
 }
