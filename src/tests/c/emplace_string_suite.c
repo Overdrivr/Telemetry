@@ -11,7 +11,10 @@ TEST emplace_string()
 
   char destination[32];
 
-  emplace(&dummy, destination, 32);
+  if(!emplace(&dummy, destination, 32))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(strlen(destination), strlen(buf),"%d");
   ASSERT_STR_EQ(destination, buf);
@@ -29,7 +32,10 @@ TEST emplace_string_exact_fit()
 
   char destination[14];
 
-  emplace(&dummy, destination, 14);
+  if(!emplace(&dummy, destination, 14))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(strlen(destination), strlen(buf),"%d");
   ASSERT_STR_EQ(destination, buf);
@@ -47,7 +53,10 @@ TEST emplace_string_truncated()
 
   char destination[10];
 
-  uint32_t size = emplace(&dummy, destination, 10);
+  if(!emplace(&dummy, destination, 10))
+  {
+    FAIL();
+  }
 
   char expected[] = "Hello, Wo";
 

@@ -11,7 +11,10 @@ TEST emplace_int8()
 
   int8_t destination;
 
-  emplace_i8(&dummy, &destination);
+  if(!emplace_i8(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%u");
 
@@ -28,7 +31,10 @@ TEST emplace_int8_neg()
 
   int8_t destination;
 
-  emplace_i8(&dummy, &destination);
+  if(!emplace_i8(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%u");
 
@@ -45,7 +51,10 @@ TEST emplace_int16()
 
   int16_t destination;
 
-  emplace_i16(&dummy, &destination);
+  if(!emplace_i16(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%d");
 
@@ -62,7 +71,10 @@ TEST emplace_int16_neg()
 
   int16_t destination;
 
-  emplace_i16(&dummy, &destination);
+  if(!emplace_i16(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%d");
 
@@ -79,7 +91,10 @@ TEST emplace_int32()
 
   int32_t destination;
 
-  emplace_i32(&dummy, &destination);
+  if(!emplace_i32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%d");
 
@@ -96,7 +111,10 @@ TEST emplace_int32_neg()
 
   int32_t destination;
 
-  emplace_i32(&dummy, &destination);
+  if(!emplace_i32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%d");
 

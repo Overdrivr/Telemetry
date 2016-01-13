@@ -11,7 +11,10 @@ TEST emplace_float32()
 
   float destination;
 
-  emplace_f32(&dummy, &destination);
+  if(!emplace_f32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%f");
 
@@ -28,7 +31,10 @@ TEST emplace_float32_neg()
 
   float destination;
 
-  emplace_f32(&dummy, &destination);
+  if(!emplace_f32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%f");
 
@@ -45,7 +51,10 @@ TEST emplace_float32_decimals()
 
   float destination;
 
-  emplace_f32(&dummy, &destination);
+  if(!emplace_f32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%f");
 
@@ -62,7 +71,10 @@ TEST emplace_float32_decimals_neg()
 
   float destination;
 
-  emplace_f32(&dummy, &destination);
+  if(!emplace_f32(&dummy, &destination))
+  {
+    FAIL();
+  }
 
   ASSERT_EQ_FMT(buf, destination,"%f");
 
