@@ -56,7 +56,7 @@ subscribe(callback);
 ```
 
 The `TM_state` data structure is a user-storage space that is defined the user.
-It must be , and provided to Telemetry during initialization.
+It must be provided to Telemetry during initialization.
 Telemetry will not in any way make changes to the state.
 The state can be primarily to store writeable parameters.
 It is passed to the subscribed callback, allowing you to easily access it without needing global variables.
