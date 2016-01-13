@@ -178,7 +178,7 @@ void subscribe(void (*callback)(TM_state* s, TM_msg* m))
 void update_telemetry(float elapsedTime)
 {
   uint32_t amount = transportPtr->readable();
-  if(amount > 0)
+  for(uint32_t i = 0 ; i < amount ; i++)
   {
     uint8_t c;
     transportPtr->read(&c,1);
@@ -193,7 +193,7 @@ uint16_t header(TM_type type)
   uint8_t * ptr = (uint8_t*)(&h);
 
   // add data to frame
-  append(h);
+  append2(h);
 
   // compute crc and return it
   return crc16(ptr, 2);
@@ -239,9 +239,8 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   // Read header
   uint16_t head;
   uint8_t * ptr;
-  ptr = (uint8_t*)(head);
-  ptr[0] = storage[0];
-  ptr[1] = storage[1];
+  ptr = (uint8_t*)(&head);
+  memcpy(ptr,storage,2);
 
   // Read topic
   uint32_t cursor = 2;
@@ -249,18 +248,16 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   while(cursor < size)
   {
     if(storage[cursor] == 0)
-    {
-      topicSize = cursor;
       break;
-    }
+    topicSize++;
     cursor++;
   }
 
   if(topicSize == 0)
     return;
 
-  // payload = total - header - topic - crc
-  int32_t payloadSize = size - 2 - topicSize - 2;
+  // payload = total - header - topic - /0 - crc
+  int32_t payloadSize = size - 2 - topicSize - 1 - 2;
 
   if(payloadSize <= 0)
     return;
@@ -268,9 +265,8 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   // Check crc
   uint16_t expected_crc = crc16(storage, size-2);
   uint16_t rcv_crc;
-  ptr = (uint8_t*)(rcv_crc);
-  ptr[0] = storage[size-2];
-  ptr[1] = storage[size-1];
+  ptr = (uint8_t*)(&rcv_crc);
+  memcpy(ptr,storage+size-2,2);
 
   if(expected_crc != rcv_crc)
     return;
@@ -278,7 +274,7 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   // Store topic
   char * t = (char *) malloc(topicSize + 1);
 
-  if(t = NULL)
+  if(t == NULL)
     return;
 
   ptr = (uint8_t*)(storage);
@@ -287,7 +283,7 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   TM_msg packet;
   packet.topic = t;
   packet.type = head;
-  packet.buffer = storage + 2 + topicSize;
+  packet.buffer = storage + 2 + topicSize + 1;
   packet.size = (uint32_t)payloadSize;
 
   // Call callback
