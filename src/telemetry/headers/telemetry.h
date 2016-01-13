@@ -12,14 +12,14 @@ typedef struct TM_state TM_state;
 
 // Enumeration of supported message payloads
 enum TM_type {
-  TM_float32,
-  TM_uint8,
-  TM_uint16,
-  TM_uint32,
-  TM_int8,
-  TM_int16,
-  TM_int32,
-  TM_string
+  TM_float32 = 0,
+  TM_uint8 = 1,
+  TM_uint16 = 2,
+  TM_uint32 = 3,
+  TM_int8 = 4,
+  TM_int16 = 5,
+  TM_int32 = 6,
+  TM_string = 7
 };
 typedef enum TM_type TM_type;
 
