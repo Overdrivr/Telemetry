@@ -27,6 +27,7 @@ typedef enum TM_type TM_type;
 typedef struct TM_msg TM_msg;
 struct TM_msg {
   TM_type type;
+  char * topic;
   void * buffer;
   uint32_t size;
 };
@@ -62,7 +63,7 @@ void publish_i16(const char * topic, int16_t msg);
 void publish_i32(const char * topic, int32_t msg);
 void publish_f32(const char * topic, float msg);
 
-void subscribe(char * topic, void (*callback)(TM_state * s, TM_msg * m));
+void subscribe(void (*callback)(TM_state * s, TM_msg * m));
 
 void update_telemetry(float elapsedTime);
 
