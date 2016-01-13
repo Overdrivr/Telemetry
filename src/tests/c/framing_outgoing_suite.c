@@ -3,10 +3,10 @@
 
 TEST framing_simple_frame()
 {
-  uint8_t incomingBuffer[12] = {0};
+  uint8_t outgoingBuffer[12] = {0};
 
   initialize_framing();
-  outgoing_storage(incomingBuffer,12);
+  outgoing_storage(outgoingBuffer,12);
 
   begin();
   append(0xFF);
@@ -18,7 +18,7 @@ TEST framing_simple_frame()
   uint16_t range = amount > 3 ? 3 : amount;
   for(uint16_t i = 0 ; i < range ; i++)
   {
-    ASSERT_EQ_FMT(expected[i],incomingBuffer[i],"%x");
+    ASSERT_EQ_FMT(expected[i],outgoingBuffer[i],"%x");
   }
 
   PASS();
@@ -26,10 +26,10 @@ TEST framing_simple_frame()
 
 TEST framing_with_escaping()
 {
-  uint8_t incomingBuffer[12] = {0};
+  uint8_t outgoingBuffer[12] = {0};
 
   initialize_framing();
-  outgoing_storage(incomingBuffer,12);
+  outgoing_storage(outgoingBuffer,12);
 
   begin();
   append(0xF7);
@@ -43,7 +43,7 @@ TEST framing_with_escaping()
   uint16_t range = amount > 8 ? 8 : amount;
   for(uint16_t i = 0 ; i < range ; i++)
   {
-    ASSERT_EQ_FMT(expected[i],incomingBuffer[i],"%x");
+    ASSERT_EQ_FMT(expected[i],outgoingBuffer[i],"%x");
   }
 
   PASS();
@@ -51,10 +51,10 @@ TEST framing_with_escaping()
 
 TEST framing_overflow()
 {
-  uint8_t incomingBuffer[3] = {0};
+  uint8_t outgoingBuffer[3] = {0};
 
   initialize_framing();
-  outgoing_storage(incomingBuffer,3);
+  outgoing_storage(outgoingBuffer,3);
 
   begin();
   append(0xFF);
