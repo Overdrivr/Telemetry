@@ -73,7 +73,7 @@ TEST publish_string()
 
   init_telemetry(&state,&transport);
 
-  subscribe("topic",callback2);
+  subscribe(callback2);
 
   publish(topic, message);
 
