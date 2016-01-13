@@ -82,13 +82,31 @@ void append(uint8_t byte)
     return;
 }
 
-void end()
+void append2(uint16_t twobytes)
+{
+  uint8_t * ptr = (uint8_t*)(&twobytes);
+  append(ptr[0]);
+  append(ptr[1]);
+}
+
+void append4(uint32_t fourbytes)
+{
+  uint8_t * ptr = (uint8_t*)(&fourbytes);
+  append(ptr[0]);
+  append(ptr[1]);
+  append(ptr[2]);
+  append(ptr[3]);
+}
+
+uint32_t end()
 {
   if(outgoingStorage.size == 0 || outgoingStorage.ptr == NULL)
-    return;
+    return 0;
 
   if(!safe_append(&outgoingStorage,EOF_))
-    return;
+    return 0;
+
+  return outgoingStorage.cursor;
 }
 
 void incoming_storage(uint8_t * buf, uint32_t bufSize)
@@ -109,27 +127,25 @@ void set_on_incoming_error(void (*callback)(int32_t errCode))
 
 void feed(uint8_t byte)
 {
-  if(incomingStorage.size == 0 || outgoingStorage.ptr == NULL)
+  if(incomingStorage.size == 0 || incomingStorage.ptr == NULL)
     return;
-
-  if(incoming_state == IDLE)
-  {
-    if(byte == SOF_)
-    {
-        incoming_state = ACTIVE;
-        incomingStorage.cursor = 0;
-    }
-    return;
-  }
 
   if(incoming_state == ESCAPING)
   {
     if(!safe_append(&incomingStorage,byte))
     {
       incoming_state = IDLE;
+      return;
     }
     incoming_state = ACTIVE;
     return;
+  }
+
+  if(byte == SOF_)
+  {
+      incoming_state = ACTIVE;
+      incomingStorage.cursor = 0;
+      return;
   }
 
   if(incoming_state == ACTIVE)
@@ -149,6 +165,7 @@ void feed(uint8_t byte)
       if(!safe_append(&incomingStorage,byte))
       {
         incoming_state = IDLE;
+        return;
       }
       incoming_state = ACTIVE;
     }
@@ -159,8 +176,9 @@ int8_t safe_append(storage * s, uint8_t byte)
 {
   // Not enough space for 1 more character
   if(s->cursor + 1 >= s->size)
-    return -1;
+    return 0;
 
   s->ptr[s->cursor++] = byte;
-  return 0;
+
+  return 1;
 }

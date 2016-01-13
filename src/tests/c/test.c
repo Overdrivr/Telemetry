@@ -1,19 +1,26 @@
 #include "test.h"
 #include "telemetry.h"
 
-extern SUITE(standard_flow_suite);
+extern SUITE(emplace_message_suite);
+extern SUITE(emplace_uint_suite);
+extern SUITE(emplace_int_suite);
+extern SUITE(emplace_float_suite);
+extern SUITE(pub_sub_string_suite);
+extern SUITE(framing_outgoing_suite);
+extern SUITE(framing_incoming_suite);
 
-/* Add definitions that need to be in the test runner's main file. */
 GREATEST_MAIN_DEFS();
 
 int main(int argc, char **argv) {
-    GREATEST_MAIN_BEGIN();      /* command-line arguments, initialization. */
+    GREATEST_MAIN_BEGIN();
 
-    /* Individual tests can be run directly. */
-    /* RUN_TEST(x_should_equal_1); */
+    RUN_SUITE(emplace_message_suite);
+    RUN_SUITE(emplace_uint_suite);
+    RUN_SUITE(emplace_int_suite);
+    RUN_SUITE(emplace_float_suite);
+    RUN_SUITE(framing_outgoing_suite);
+    RUN_SUITE(framing_incoming_suite);
+    RUN_SUITE(pub_sub_string_suite);
 
-    /* Tests can also be gathered into test suites. */
-    RUN_SUITE(standard_flow_suite);
-
-    GREATEST_MAIN_END();        /* display results */
+    GREATEST_MAIN_END();
 }
