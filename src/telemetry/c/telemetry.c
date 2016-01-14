@@ -13,6 +13,7 @@ static void (*userCallback)(TM_state * s, TM_msg * m);
 uint16_t header(TM_type type);
 uint16_t topic(const char * topic, uint16_t crc);
 uint16_t payload(const void * payload, uint32_t size, uint16_t crc);
+void frame(const char * t, TM_type type, const void * data, uint32_t datasize);
 void send(void * buf, uint32_t size);
 void on_incoming_frame(uint8_t * storage, uint32_t size);
 void on_incoming_error(int32_t errCode);
@@ -113,61 +114,49 @@ uint32_t emplace_f32(TM_msg* m, float* dst)
 
 void publish(const char * t, char * msg)
 {
-  // start new frame
-  begin();
-
-  // header
-  uint16_t crc = header(TM_string);
-
-  // topic
-  crc = topic(t, crc);
-
-  // payload
-  crc = payload(msg, strlen(msg), crc);
-
-  // crc
-  append2(crc);
-
-  // complete frame
-  uint32_t bytesAmount = end();
-
-  // send data
-  send(outgoingBuffer, bytesAmount);
+  frame(t,TM_string,msg,strlen(msg));
 }
 
 void publish_u8(const char * t, uint8_t  msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_uint8,ptr,1);
 }
 
 void publish_u16(const char * t, uint16_t msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_uint16,ptr,2);
 }
 
 void publish_u32(const char * t, uint32_t msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_uint32,ptr,4);
 }
 
 void publish_i8(const char * t, int8_t   msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_int8,ptr,1);
 }
 
 void publish_i16(const char * t, int16_t  msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_int16,ptr,2);
 }
 
 void publish_i32(const char * t, int32_t  msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_int32,ptr,4);
 }
 
 void publish_f32(const char * t, float    msg)
 {
-
+  void * ptr = (void *)(&msg);
+  frame(t,TM_float32,ptr,4);
 }
 
 void subscribe(void (*callback)(TM_state* s, TM_msg* m))
@@ -222,6 +211,30 @@ uint16_t payload(const void * p, uint32_t size, uint16_t crc)
     crc = crc16_recursive(ptr[i], crc);
   }
   return crc;
+}
+
+void frame(const char * t, TM_type type, const void * data, uint32_t datasize)
+{
+  // start new frame
+  begin();
+
+  // header
+  uint16_t crc = header(type);
+
+  // topic
+  crc = topic(t, crc);
+
+  // payload
+  crc = payload(data, datasize, crc);
+
+  // crc
+  append2(crc);
+
+  // complete frame
+  uint32_t bytesAmount = end();
+
+  // send data
+  send(outgoingBuffer, bytesAmount);
 }
 
 void send(void * buf, uint32_t size)
