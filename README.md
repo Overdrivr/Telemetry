@@ -4,7 +4,7 @@ It is suitable for master/slave or device-to-device intercommunication.
 
 The library is using a publish/subscribe mechanism.
 
-Written in ANSI C language, the library is multi-platform and compatible with a wide range of embedded platforms.
+Written in ANSI C language, the library is multi-platform and compatible with a wide range of desktop environment and embedded platforms.
 
 ## Why this library ?
 This library aims at providing a straightforward way to read telemetry and configure remotely an embedded device.

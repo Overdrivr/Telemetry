@@ -8,6 +8,9 @@ extern SUITE(emplace_float_suite);
 extern SUITE(pub_sub_string_suite);
 extern SUITE(framing_outgoing_suite);
 extern SUITE(framing_incoming_suite);
+extern SUITE(pub_sub_uint_suite);
+extern SUITE(pub_sub_int_suite);
+extern SUITE(pub_sub_float_suite);
 
 GREATEST_MAIN_DEFS();
 
@@ -21,6 +24,9 @@ int main(int argc, char **argv) {
     RUN_SUITE(framing_outgoing_suite);
     RUN_SUITE(framing_incoming_suite);
     RUN_SUITE(pub_sub_string_suite);
+    RUN_SUITE(pub_sub_uint_suite);
+    RUN_SUITE(pub_sub_int_suite);
+    RUN_SUITE(pub_sub_float_suite);
 
     GREATEST_MAIN_END();
 }
