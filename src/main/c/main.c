@@ -49,7 +49,7 @@ int main()
 
   int32_t d = 1.f;
 
-  subscribe("Proportional",callback);
+  subscribe(callback);
 
   for( ; ; )
   {
