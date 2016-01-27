@@ -243,7 +243,7 @@ TEST publish_int32()
   transport.readable = readable_int;
   transport.writeable = writeable_int;
 
-  char topic[] = "topic";
+  char topic[] = " topic ";
   int32_t value = 2147483647;
 
   init_telemetry(&state,&transport);
