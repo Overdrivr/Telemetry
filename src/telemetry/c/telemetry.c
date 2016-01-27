@@ -7,6 +7,7 @@ static TM_state * statePtr;
 static TM_transport * transportPtr;
 static uint8_t incomingBuffer[INCOMING_BUFFER_SIZE];
 static uint8_t outgoingBuffer[OUTGOING_BUFFER_SIZE];
+static uint8_t topicBuffer[TOPIC_BUFFER_SIZE];
 
 static void (*userCallback)(TM_state * s, TM_msg * m);
 
@@ -285,25 +286,19 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
     return;
 
   // Store topic
-  char * t = (char *) malloc(topicSize + 1);
-
-  if(t == NULL)
-    return;
-
   ptr = (uint8_t*)(storage);
-  strcpy(t, ptr + 2);
+  strcpy(topicBuffer, ptr + 2);
+
+  ptr = (uint8_t*)(storage) + (uint32_t)(2 + topicSize + 1);
 
   TM_msg packet;
-  packet.topic = t;
+  packet.topic = topicBuffer;
   packet.type = head;
-  packet.buffer = storage + 2 + topicSize + 1;
+  packet.buffer = (void *)(ptr);
   packet.size = (uint32_t)payloadSize;
 
   // Call callback
   userCallback(statePtr,&packet);
-
-  //
-  free(t);
 }
 
 void on_incoming_error(int32_t errCode)
