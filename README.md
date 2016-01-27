@@ -14,11 +14,7 @@ So far, the library has been tested on windows, ARM mbed (specifically on NXP pl
 
 ## Usage
 
-    __________  publish("foo",..)                      "foo" ! -> callbackB  __________
-   |          |------------------------------------------------------------>|          |
-   | device A |                                                             | device B |
-   |__________|<------------------------------------------------------------|__________|
-subscribe(callbackA)     callbackA <- ! "bar"          publish("bar", ..)  subscribe(callbackB)
+![publish subscribe concept](https://rawgit.com/Overdrivr/Telemetry/master/concept.svg)
 
 ### publish on a topic
 
