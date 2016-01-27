@@ -1,23 +1,31 @@
 ## Purpose
-Telemetry is a point-to-point data-exchange library. Its goal is to facilitate exchange of (wait for it...) telemetry and remote control.
-It is suitable for master/slave or device-to-device intercommunication.
+Telemetry is a portable, fast, safe, and lightweight point-to-point data-exchange library.
+It facilitates exchange of telemetry data and remote program control.
+It is suitable for master/slave or device-to-device intercommunication and is fully compatible with embedded applications.
+It can be used for real-time debugging and for end application.
 
-The library is using a publish/subscribe mechanism.
+## Operation
+The library is using a publish/subscribe mechanism to transfer data on channels called 'topics'.
 
+## Portability
 Written in ANSI C language, the library is multi-platform and compatible with a wide range of desktop environment and embedded platforms.
-
-## Why this library ?
-This library aims at providing a straightforward way to read telemetry and configure remotely an embedded device.
-It can prove useful during embedded applications development, for debugging or for final application.
-It is designed to be easy to use and easy to test.
+It is not relying on any dynamic allocation schemes.
+So far, the library has been tested on windows, ARM mbed (specifically on NXP platform Kinetis KL25Z).
 
 ## Usage
+
+    __________  publish("foo",..)                      "foo" ! -> callbackB  __________
+   |          |------------------------------------------------------------>|          |
+   | device A |                                                             | device B |
+   |__________|<------------------------------------------------------------|__________|
+subscribe(callbackA)     callbackA <- ! "bar"          publish("bar", ..)  subscribe(callbackB)
+
 ### publish on a topic
 
 Messages can be published to a topic identified by a string.
 
 ```c
-float readOnlyVar = 0;
+float readOnlyVar = 1.23E4;
 
 // Sends a message containing a float32 value on the topic 'foo'
 publish_f32("foo",readOnlyVar);
@@ -30,51 +38,26 @@ publish("foo","variable foo sent.");
 Subscribe a callback to be notified when a new message is received.
 
 ```c
-// Callbacks must follow this construct
+
+// main()
+// {
+// ..
+
+subscribe(callback);
+// .. }
+
+// your callback
 void callback(TM_state* s, TM_msg* m)
 {
-  // Perform action on topic
-  if(strequal(strm->topic,"foo"))
-  {
-
-  }
-
   // Perform action on message type
   if(m->type == TM_type_float32)
   {
-    // Store the received binary data (a float value here) into a variable
     float v;
-    if(emplace(m, &v))
-    {
-      // v now contains the received value
-    }
+    emplace_f32(m, &v))// v now contains the received value
   }
 }
 
-// ..
-subscribe(callback);
 ```
-
-The `TM_state` data structure is a user-storage space that is defined the user.
-It must be provided to Telemetry during initialization.
-Telemetry will not in any way make changes to the state.
-The state can be primarily to store writeable parameters.
-It is passed to the subscribed callback, allowing you to easily access it without needing global variables.
-
-```c
-// Some random user-defined fields in TM_state
-struct TM_state {
-    float someParam;
-    int32_t someOtherParam;
-};
-
-// No need to typedef it, it is forward-defined in telemetry.h
-
-TM_state state;
-
-initTelemetry(&state);
-```
-
 ## Set-up
 Telemetry can be setup in different manners, depending if you are targeting a desktop or embedded application.
 
@@ -82,26 +65,29 @@ Telemetry can be setup in different manners, depending if you are targeting a de
 
 For desktop applications, you just need a regular C compiler with its `/bin` subfolder accessible OS-wide.
 On windows this means you must add `/bin` to the PATH.
+A quick way to check if the toolchain is well installed is to run
+```bash
+gcc -v
+```
 
-Then, with a console pointing to the project root directory
+Then, with a console pointing to the project root directory you can build the project with a simple command
 ```bash
 gradlew build
 ```
 
 #### Work directly from files
 For embedded devices, or if you do not wish to use the gradle build system, you can work directly from files.
-Add the following folders to your project :
+Add the *contents* of the following folders in the same folder to your project :
 ```
 scr/telemetry
 src/framing
 src/crc16
 src/huffman
 ```
-Please note that some `#include` directives may become broken in the process, because of the way gradle abstracts the folder hierarchy.
-You will need to fix them manually since it depends on your build setup.
 
 #### Note on supported devices
-...
+So far, the following embedded devices have been validated with it:
+* NXP KL25Z
 
 ## Testing
 Testing can be performed in a desktop environment, by running the following gradle tasks.
@@ -118,5 +104,5 @@ tests.bat -v
 ```
 
 ## History
-Successor of DistantIO.
+Successor of (DistantIO)[https://github.com/Overdrivr/DistantIO].
 Freely inspired on MQTT.
