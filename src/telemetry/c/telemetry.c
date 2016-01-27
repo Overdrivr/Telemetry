@@ -7,7 +7,7 @@ static TM_state * statePtr;
 static TM_transport * transportPtr;
 static uint8_t incomingBuffer[INCOMING_BUFFER_SIZE];
 static uint8_t outgoingBuffer[OUTGOING_BUFFER_SIZE];
-static uint8_t topicBuffer[TOPIC_BUFFER_SIZE];
+static char topicBuffer[TOPIC_BUFFER_SIZE];
 
 static void (*userCallback)(TM_state * s, TM_msg * m);
 
@@ -55,7 +55,7 @@ uint32_t emplace_u8(TM_msg* m, uint8_t* dst)
   if(m->type != TM_uint8)
     return 0;
 
-  *dst = *(uint8_t*)(m->buffer);
+  memcpy(dst,m->buffer,1);
   return 1;
 }
 
@@ -64,7 +64,7 @@ uint32_t emplace_u16(TM_msg* m, uint16_t* dst)
   if(m->type != TM_uint16)
     return 0;
 
-  *dst = *(uint16_t*)(m->buffer);
+  memcpy(dst,m->buffer,2);
   return 1;
 }
 
@@ -73,7 +73,7 @@ uint32_t emplace_u32(TM_msg* m, uint32_t* dst)
   if(m->type != TM_uint32)
     return 0;
 
-  *dst = *(uint32_t*)(m->buffer);
+  memcpy(dst,m->buffer,4);
   return 1;
 }
 
@@ -82,7 +82,7 @@ uint32_t emplace_i8(TM_msg* m, int8_t* dst)
   if(m->type != TM_int8)
     return 0;
 
-  *dst = *(int8_t*)(m->buffer);
+  memcpy(dst,m->buffer,1);
   return 1;
 }
 
@@ -91,7 +91,7 @@ uint32_t emplace_i16(TM_msg* m, int16_t* dst)
   if(m->type != TM_int16)
     return 0;
 
-  *dst = *(int16_t*)(m->buffer);
+  memcpy(dst,m->buffer,2);
   return 1;
 }
 
@@ -100,7 +100,7 @@ uint32_t emplace_i32(TM_msg* m, int32_t* dst)
   if(m->type != TM_int32)
     return 0;
 
-  *dst = *(int32_t*)(m->buffer);
+  memcpy(dst,m->buffer,4);
   return 1;
 }
 
@@ -109,7 +109,7 @@ uint32_t emplace_f32(TM_msg* m, float* dst)
   if(m->type != TM_float32)
     return 0;
 
-  *dst = *(float*)(m->buffer);
+  memcpy(dst,m->buffer,4);
   return 1;
 }
 
@@ -286,14 +286,15 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
     return;
 
   // Store topic
-  ptr = (uint8_t*)(storage);
-  strcpy(topicBuffer, ptr + 2);
+  char * t = (char*)(storage);
+  strcpy(topicBuffer, t + 2);
 
+  // ptr to beginning of payload
   ptr = (uint8_t*)(storage) + (uint32_t)(2 + topicSize + 1);
 
   TM_msg packet;
   packet.topic = topicBuffer;
-  packet.type = head;
+  packet.type = (TM_type)head;
   packet.buffer = (void *)(ptr);
   packet.size = (uint32_t)payloadSize;
 
