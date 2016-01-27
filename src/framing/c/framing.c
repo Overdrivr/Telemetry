@@ -1,12 +1,11 @@
 #include "framing.h"
 
-typedef enum _state _state;
-enum _state
+typedef enum _state
 {
   IDLE, // No incoming frame is in process
   ESCAPING, // incoming frame in process, next character to be escaped
   ACTIVE // frame in process
-};
+} _state ;
 
 typedef struct storage storage;
 struct storage
