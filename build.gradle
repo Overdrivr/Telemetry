@@ -1,4 +1,5 @@
 apply plugin: 'c'
+apply plugin: 'cpp'
 
 model {
     buildTypes {
@@ -38,5 +39,67 @@ model {
          lib library: "framing"
        }
      }
+
+   crc16pp(NativeLibrarySpec){
+     sources {
+          cpp {
+            source {
+                srcDirs "src/crc16/c"
+                include "**/*.c"
+            }
+            exportedHeaders {
+                srcDirs "src/crc16/headers"
+            }
+        }
+      }
    }
+   framingpp(NativeLibrarySpec) {
+     sources {
+          cpp {
+            source {
+                srcDirs "src/framing/c"
+                include "**/*.c"
+            }
+            exportedHeaders {
+                srcDirs "src/framing/headers"
+            }
+        }
+      }
+   }
+   telemetrypp(NativeLibrarySpec) {
+     binaries.all {
+       lib library: "crc16pp"
+       lib library: "framingpp"
+     }
+     sources {
+          cpp {
+            source {
+                srcDirs "src/telemetry/c"
+                include "**/*.c"
+            }
+            exportedHeaders {
+                srcDirs "src/telemetry/headers"
+            }
+        }
+      }
+   }
+   testspp(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "telemetrypp"
+        lib library: "crc16pp"
+        lib library: "framingpp"
+      }
+      sources {
+           cpp {
+             source {
+                 srcDirs "src/tests/c"
+                 include "**/*.c"
+             }
+             exportedHeaders {
+                 srcDirs "src/tests/headers"
+             }
+         }
+       }
+    }
+  }
 }
