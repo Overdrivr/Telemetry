@@ -34,22 +34,6 @@
          inkscape:connector-curvature="0" />
     </marker>
     <marker
-       inkscape:stockid="TriangleOutM"
-       orient="auto"
-       refY="0"
-       refX="0"
-       id="TriangleOutM"
-       style="overflow:visible"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         id="path4293"
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
-         transform="scale(0.4,0.4)"
-         inkscape:connector-curvature="0" />
-    </marker>
-    <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
        refY="0"
@@ -72,16 +56,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9899495"
-     inkscape:cx="63.318847"
-     inkscape:cy="43.333841"
+     inkscape:zoom="1.4"
+     inkscape:cx="367.02217"
+     inkscape:cy="123.00302"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:object-nodes="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1058"
-     inkscape:window-x="-8"
+     inkscape:window-height="1018"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showborder="false"
@@ -103,7 +87,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -122,34 +106,28 @@
        ry="0" />
     <rect
        y="142.3622"
-       x="460"
+       x="655"
        height="80"
        width="130"
        id="rect4140"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:"
-       d="m 220,152.3622 225,0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 340,152.3622 170,0"
        id="path4142"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path4534"
-       d="m 460,212.3622 -225,0"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:18.75px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="115.08665"
-       y="178.04059"
+       x="117.22951"
+       y="181.61201"
        id="text4780"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4782"
-         x="115.08665"
-         y="178.04059">device A</tspan></text>
+         x="117.22951"
+         y="181.61201">device A</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:11.25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f7993a;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -165,46 +143,46 @@
        sodipodi:linespacing="125%"
        id="text4796"
        y="206.30128"
-       x="464.54132"
+       x="659.54132"
        style="font-style:normal;font-weight:normal;font-size:11.25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f7993a;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          y="206.30128"
-         x="464.54132"
+         x="659.54132"
          id="tspan4798"
          sodipodi:role="line">subscribe(callbackB);</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="199.44415"
-       y="132.4055"
+       x="227.22334"
+       y="155.70029"
        id="text4800"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4802"
-         x="199.44415"
-         y="132.4055">publish(&quot;<tspan
+         x="227.22334"
+         y="155.70029">publish(&quot;<tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ff0000;fill-opacity:1"
    id="tspan4820">foo</tspan>&quot;,..)</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text4784"
-       y="179.13739"
-       x="489.2869"
+       y="182.35167"
+       x="682.5011"
        style="font-style:normal;font-weight:normal;font-size:18.75px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         y="179.13739"
-         x="489.2869"
+         y="182.35167"
+         x="682.5011"
          id="tspan4786"
          sodipodi:role="line">device B</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text4808"
-       y="132.65804"
-       x="385.56476"
+       y="155.89154"
+       x="524.80585"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         y="132.65804"
-         x="385.56476"
+         y="155.89154"
+         x="524.80585"
          id="tspan4810"
          sodipodi:role="line">callbackB(&quot;<tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ff0000;fill-opacity:1"
@@ -212,12 +190,12 @@
     <text
        sodipodi:linespacing="125%"
        id="text4812"
-       y="237.4055"
-       x="391.48984"
+       y="214.19122"
+       x="539.34692"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         y="237.4055"
-         x="391.48984"
+         y="214.19122"
+         x="539.34692"
          id="tspan4814"
          sodipodi:role="line">publish(&quot;<tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';opacity:0.98999999;fill:#0074ff;fill-opacity:1"
@@ -225,15 +203,31 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="189.74893"
-       y="237.65804"
+       x="227.60608"
+       y="215.87233"
        id="text4816"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4818"
-         x="189.74893"
-         y="237.65804">callbackA(&quot;<tspan
+         x="227.60608"
+         y="215.87233">callbackA(&quot;<tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#0074ff;fill-opacity:1"
    id="tspan4842">bar</tspan>&quot;,..)</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 510,147.36221 10,5 -10,5 z"
+       id="path4182"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4196"
+       d="m 360,207.36221 -10,5 10,5 z"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4198"
+       d="m 360,212.36221 170,0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>
