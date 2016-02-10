@@ -1,12 +1,14 @@
 ## Overview
-Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol.
+Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language.
 
-It is part of a set of tools (pytelemetry, pytelemetrycli) on embedded devices and desktop, that ultimately, lets you achieve effortless communication between a computer and an embedded device.
+Ultimately, `Telemetry` helps you achieve effortless communication between a computer and an embedded device, with a minimal amount of code.
 
 ![Overview](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/overview.png)
 
+
 * [`pytelemetry`](https://github.com/Overdrivr/pytelemetry)
 [![PyPI version](https://badge.fury.io/py/pytelemetry.svg)](https://badge.fury.io/py/pytelemetry) is the python implementation of this protocol, and lets you write simple python scripts that communicate with a device.
+
 * [`pytelemetrycli`](https://github.com/Overdrivr/pytelemetrycli)[![PyPI version](https://badge.fury.io/py/pytelemetrycli.svg)](https://badge.fury.io/py/pytelemetrycli) is an awesome command line interface that allows you to communicate directly with your device, write data from your computer, open high-performance graphs that plots data from the device in real-time. All of that accessible by typing a few commands.
 
 ## Why using it ?
@@ -14,7 +16,7 @@ It is part of a set of tools (pytelemetry, pytelemetrycli) on embedded devices a
 Telemetry is for you if :
 
 * you are using `printf` to debug your application (and looking for a better way)
-* you are all the time re-writing custom protocols on top of the serial port for each new application (and hating it)
+* you are constantly re-writing custom protocols on top of the serial port for each new application
 * you need a **reliable** and **error-tolerant** communication protocol for your application, that will run both on desktop and embedded
 * you need to finely tune your application, but so far you are compiling/flashing the code all over again after each parameter change
 * you want to **plot** parameters of your application in **real-time** in a clean, fast and reliable way
@@ -22,7 +24,7 @@ Telemetry is for you if :
 * you have found some other communication protocol but cannot manage to integrate it on your specific device
 
 ## Principle
-The underlying communication protocol mostly follows the [PubSub](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)(publish/subscribe) messaging pattern.
+The underlying communication protocol mostly follows the [PubSub](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) (Publish/Subscribe) messaging pattern.
 
 > [..] messages are published to "topics" or named logical channels. Subscribers in a topic-based system will receive all messages published to
 > the topics to which they subscribe [..].
@@ -81,7 +83,7 @@ void callback(TM_state* s, TM_msg* m)
 
 ```
 ## Set-up
-Telemetry can be setup in different manners, depending if you are targeting a desktop build (for testing mostly) or an embedded application.
+Telemetry can be setup in different manners, depending if you are targeting a desktop build (for running the test suite) or an embedded application.
 
 ### Embedded devices
 For embedded devices, simply add the *contents* of the following folders in the same folder to your project :
@@ -112,9 +114,9 @@ If it displays a bunch of version messages and doesn't throw an error, you're go
 
 2. Install [java](https://www.java.com/fr/)  (required by Gradle)
 
-Then, once it's done, you can start building the project :fireworks:.
+Then, once it's done, you can start building the project.
 
-With a terminal pointing to the project root directory you can build the project with a simple command
+With a terminal pointing to the project root directory :
 
 ```bash
 gradlew build
