@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
 ## Overview
 Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language.
 
@@ -15,13 +16,12 @@ Ultimately, `Telemetry` helps you achieve effortless communication between a com
 
 Telemetry is for you if :
 
-* you are using `printf` to debug your application (and looking for a better way)
-* you are constantly re-writing custom protocols on top of the serial port for each new application
-* you need a **reliable** and **error-tolerant** communication protocol for your application, that will run both on desktop and embedded
-* you need to finely tune your application, but so far you are compiling/flashing the code all over again after each parameter change
-* you want to **plot** parameters of your application in **real-time** in a clean, fast and reliable way
-* your embedded device has very limited resources and will tolerate only a fast and lightweight communication library
-* you have found some other communication protocol but cannot manage to integrate it on your specific device
+* you are using `printf` to debug your embedded application
+* you are constantly re-writing custom protocols on top of the serial port
+* you need a **reliable** and **error-tolerant** communication protocol
+* you want to finely tune your application without loosing time compiling & flashing just to tune a parameter
+* you want to **plot** parameters of your application in **real-time**
+* your embedded device has very limited resources and will tolerate only a lightweight communication library
 
 ## Principle
 The underlying communication protocol mostly follows the [PubSub](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) (Publish/Subscribe) messaging pattern.
