@@ -42,7 +42,7 @@ struct TM_transport {
   int32_t (*writeable)();
 };
 
-void init_telemetry(TM_state * s, TM_transport * t);
+void init_telemetry(TM_transport * t);
 
 // Decodes TM_msg buffer and emplaces its value into dst
 // Returns 0 if decoding was successful
@@ -63,6 +63,8 @@ void publish_i8(const char * topic, int8_t msg);
 void publish_i16(const char * topic, int16_t msg);
 void publish_i32(const char * topic, int32_t msg);
 void publish_f32(const char * topic, float msg);
+
+void set_state(TM_state * s);
 
 void subscribe(void (*callback)(TM_state * s, TM_msg * m));
 

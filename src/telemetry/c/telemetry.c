@@ -20,9 +20,9 @@ void on_incoming_frame(uint8_t * storage, uint32_t size);
 void on_incoming_error(int32_t errCode);
 void emptyCallback(TM_state * s, TM_msg * m);
 
-void init_telemetry(TM_state* s, TM_transport * t)
+void init_telemetry(TM_transport * t)
 {
-  statePtr = s;
+  statePtr = NULL;
   transportPtr = t;
   userCallback = emptyCallback;
 
@@ -160,6 +160,11 @@ void publish_f32(const char * t, float    msg)
   frame(t,TM_float32,ptr,4);
 }
 
+void set_state(TM_state * s)
+{
+  statePtr = s;
+}
+
 void subscribe(void (*callback)(TM_state* s, TM_msg* m))
 {
   userCallback = callback;
@@ -167,7 +172,12 @@ void subscribe(void (*callback)(TM_state* s, TM_msg* m))
 
 void update_telemetry(float elapsedTime)
 {
+  // If user forgot to define transport by calling init_telemetry, abort
+  if(!transportPtr)
+    return;
+
   uint32_t amount = transportPtr->readable();
+
   for(uint32_t i = 0 ; i < amount ; i++)
   {
     uint8_t c;
@@ -240,6 +250,10 @@ void frame(const char * t, TM_type type, const void * data, uint32_t datasize)
 
 void send(void * buf, uint32_t size)
 {
+  // If user forgot to define transport by calling init_telemetry, abort
+  if(!transportPtr)
+    return;
+
   if(transportPtr->writeable() && size > 0)
   {
     transportPtr->write(outgoingBuffer, size);
