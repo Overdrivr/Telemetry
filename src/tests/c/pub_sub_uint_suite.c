@@ -93,7 +93,8 @@ TEST publish_uint8()
   char topic[] = "topic";
   uint8_t value = 255;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_uint);
 
@@ -131,7 +132,8 @@ TEST publish_uint16()
   char topic[] = "topic";
   uint16_t value = 65535;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_uint);
 
@@ -169,7 +171,8 @@ TEST publish_uint32()
   char topic[] = "topic";
   uint32_t value = 4294967295;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_uint);
 
