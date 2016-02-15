@@ -81,7 +81,8 @@ TEST publish_float()
   char topic[] = "topic";
   float value = 1.23E4;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_float);
 
@@ -119,7 +120,8 @@ TEST publish_float_neg()
   char topic[] = "topic";
   float value = -1.23E4;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_float);
 

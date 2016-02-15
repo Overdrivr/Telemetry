@@ -94,7 +94,8 @@ TEST publish_int8()
   char topic[] = "topic";
   int8_t value = 127;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 
@@ -132,7 +133,8 @@ TEST publish_int8_neg()
   char topic[] = "topic";
   int8_t value = -127;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 
@@ -170,7 +172,8 @@ TEST publish_int16()
   char topic[] = "topic";
   int16_t value = 32767;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 
@@ -208,7 +211,8 @@ TEST publish_int16_neg()
   char topic[] = "topic";
   int16_t value = -32767;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 
@@ -246,7 +250,8 @@ TEST publish_int32()
   char topic[] = " topic ";
   int32_t value = 2147483647;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 
@@ -284,7 +289,8 @@ TEST publish_int32_neg()
   char topic[] = "topic";
   int32_t value = -2147483647;
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_int);
 

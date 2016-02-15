@@ -81,7 +81,8 @@ TEST publish_string()
   char topic[] = "topic";
   char message[] = "someMessage";
 
-  init_telemetry(&state,&transport);
+  init_telemetry(&transport);
+  set_state(&state);
 
   subscribe(callback_str);
 
