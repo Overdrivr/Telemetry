@@ -4,11 +4,11 @@
 
 Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language with an equivalent in Python (Pytelemetry).
 
-![Overview](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/overview.png)
+![Overview](https://raw.githubusercontent.com/Overdrivr/Telemetry/master/pubsub_overview.png)
 
-Data is exchanged on named channels, called *topics*. `foo`, `bar` and `qux` are all topics on the figure above. 
+Data is exchanged on named channels, called *topics*. `foo`, `bar` and `qux` are all topics on the figure above.
 
-`Telemetry` lets you attach your own C function to a topic. Each time this specific topic is received, your C function will be called and you will receive the associated data as an input parameter. 
+`Telemetry` lets you attach your own C function to a topic. Each time this specific topic is received, your C function will be called and you will receive the associated data as an input parameter.
 
 ## Why using it ?
 
@@ -38,5 +38,5 @@ Directly in a terminal, with a few commands, you can :
 * (*to be done*) full logging of a communication session
 * (*to be done*) replay step-by-step of a session for deep analysis
 
-## Setup & Utilisation 
+## Setup & Utilisation
 All the information is in the [Wiki](https://github.com/Overdrivr/Telemetry/wiki).
