@@ -1,5 +1,78 @@
 apply plugin: 'c'
 apply plugin: 'cpp'
+apply plugin : 'java'
+
+//TODO : Clean old folders
+
+task copyToCDistribution(type: Copy) {
+  def d = new File('dist/c/')
+  d.mkdirs()
+
+  from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
+  '/drivers/c/base/'
+  into 'dist/c/'
+  include '**.c','**.h'
+}
+
+task copyToCppDistribution(type: Copy) {
+  def d = new File('dist/cpp/c_api/')
+  d.mkdirs()
+
+  from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
+  into 'dist/cpp/c_api/'
+  include '**.c','**.h'
+}
+
+task copyToMbedDistribution(type: Copy) {
+  def d = new File('dist/mbed/c_api/')
+  d.mkdirs()
+
+  from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
+  into 'dist/mbed/c_api/'
+  include '**.c','**.h'
+}
+
+task copyCppInterfaceAndDriver(type: Copy) {
+  from '/cpp_interface/','/drivers/cpp/base/'
+  into 'dist/cpp/'
+  include '**.c','**.h','**.cpp','**.hpp'
+}
+
+task copyMbedInterfaceAndDriver(type: Copy) {
+  from '/cpp_interface/','/drivers/cpp/mbed/'
+  into 'dist/mbed/'
+  include '**.c','**.h','**.cpp','**.hpp'
+}
+
+// distributes the C api.
+// Copies files from src/ folders into dist/c folder
+// Copies driverBase.h file into dist/c
+task distributeC() {
+  dependsOn << copyToCDistribution
+}
+
+// distributes the C++ api.
+// Copies files from src/ folders into dist/cpp folder
+// Copies driverBase.h file into dist/cpp
+// Copies interface/cpp/* into dist/cpp
+
+task distributeCpp() {
+  dependsOn << copyToCppDistribution
+  dependsOn << copyCppInterfaceAndDriver
+}
+
+// distributes the Mbed api.
+// Copies files from src/ folders into dist/cpp folder
+// Copies driverMbed.h file into dist/cpp
+// Copies interface/cpp/* into dist/cpp
+
+task distributeMbed() {
+  dependsOn << copyToMbedDistribution
+  dependsOn << copyMbedInterfaceAndDriver
+}
 
 model {
     buildTypes {
