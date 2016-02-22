@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
+[![Twitter Follow](https://img.shields.io/twitter/follow/@remibgs.svg?style=social)](https://twitter.com/remibgs)
 ## Overview
 `Telemetry` provides effortless communication between a computer and an embedded device.
 
