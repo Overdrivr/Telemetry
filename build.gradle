@@ -1,5 +1,107 @@
 apply plugin: 'c'
 apply plugin: 'cpp'
+apply plugin : 'java'
+
+//TODO : Clean old folders
+
+//TODO : Fix this : Impossible to make it to work for now
+/*
+task createTree() {
+  def d1 = new File(project.buildDir, 'dist/')
+  d1.mkdir()
+  def d11 = new File(project.buildDir, 'dist/c/')
+  d11.mkdir()
+  def d12 = new File(project.buildDir, 'dist/cpp/')
+  d12.mkdir()
+  def d112 = new File(project.buildDir, 'dist/cpp/c_api/')
+  d112.mkdir()
+}
+*/
+
+task copyCrc16(type: Copy) {
+  from '/src/crc16/c/', '/src/crc16/headers'
+  into 'dist/c/'
+  include '**.c','**.h'
+}
+
+task copyFraming(type: Copy) {
+  from '/src/framing/c/', '/src/framing/headers'
+  into 'dist/c/'
+  include '**.c','**.h'
+}
+
+task copyTelemetry(type: Copy) {
+  from '/src/telemetry/c/', '/src/telemetry/headers'
+  into 'dist/c/'
+  include '**.c','**.h'
+}
+
+task copyDriverBaseC(type: Copy) {
+  from '/drivers/base/'
+  into 'dist/c/'
+  include 'driver.h'
+}
+
+task copyDriverBaseCpp(type: Copy) {
+  from '/drivers/base/'
+  into 'dist/cpp/'
+  include 'driver.h'
+}
+
+task copyDriverMbed(type: Copy) {
+  from '/drivers/mbed/'
+  into 'dist/cpp/'
+  include 'driver.h'
+}
+
+task copyCppApiInterface(type: Copy) {
+  from '/interfaces/cpp/'
+  into 'dist/cpp/'
+  include '**.hpp', '**.cpp'
+}
+
+task prepareDistributeC() {
+  dependsOn << copyCrc16
+  dependsOn << copyFraming
+  dependsOn << copyTelemetry
+}
+
+task prepareDistributeCpp(type: Copy) {
+  dependsOn << prepareDistributeC
+  from 'dist/c/'
+  into 'dist/cpp/c_api/'
+  include '**.c','**.h'
+}
+
+// distributes the C api.
+// Copies files from src/ folders into dist/c folder
+// Copies driverBase.h file into dist/c
+task distributeC() {
+  dependsOn << prepareDistributeC
+  dependsOn << copyDriverBaseC
+}
+
+// distributes the C++ api.
+// Copies files from src/ folders into dist/cpp folder
+// Copies driverBase.h file into dist/cpp
+// Copies interface/cpp/* into dist/cpp
+
+task distributeCpp() {
+  dependsOn << prepareDistributeCpp
+  dependsOn << copyDriverBaseCpp
+  dependsOn << copyCppApiInterface
+}
+
+// distributes the Mbed api.
+// Copies files from src/ folders into dist/cpp folder
+// Copies driverMbed.h file into dist/cpp
+// Copies interface/cpp/* into dist/cpp
+
+task distributeMbed() {
+  dependsOn << prepareDistributeCpp
+  dependsOn << copyDriverMbed
+  dependsOn << copyCppApiInterface
+}
 
 model {
     buildTypes {
