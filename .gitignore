@@ -97,6 +97,4 @@ gradle-app.setting
 
 # ===============
 # Distribution folder
-dist/c/
-dist/cpp
-dist/cpp/c_api/
+dist/
