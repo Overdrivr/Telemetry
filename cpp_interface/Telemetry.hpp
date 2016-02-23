@@ -1,4 +1,4 @@
-#include "c_api/telemetry.h"
+#include "c_api/telemetry_utils.h"
 
 class Telemetry
 {
