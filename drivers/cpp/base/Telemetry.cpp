@@ -1,4 +1,5 @@
 #include "Telemetry.hpp"
+#include "c_api/telemetry.h"
 
 /*
   Driver specific routines. You must implement these 4 functions (read, write,

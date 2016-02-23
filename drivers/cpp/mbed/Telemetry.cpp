@@ -1,5 +1,5 @@
 #include "Telemetry.hpp"
-
+#include "c_api/telemetry.h"
 #include "BufferedSerial.h"
 
 static BufferedSerial pc(USBTX, USBRX);
