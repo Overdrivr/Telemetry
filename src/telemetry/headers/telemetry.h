@@ -11,7 +11,7 @@
 
 void init_telemetry(TM_transport * t);
 
-void publish(const char * topic, char * msg);
+void publish(const char * topic, const char * msg);
 void publish_u8(const char * topic, uint8_t msg);
 void publish_u16(const char * topic, uint16_t msg);
 void publish_u32(const char * topic, uint32_t msg);
