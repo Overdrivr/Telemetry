@@ -1,6 +1,10 @@
 #ifndef TELEMETRY_UTILS_H_
 #define TELEMETRY_UTILS_H_
 
+#include "stddef.h"
+#include "stdint.h"
+#include "string.h"
+
 // Forward declaration of user state
 typedef struct TM_state TM_state;
 

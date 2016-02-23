@@ -1,7 +1,6 @@
 #include "telemetry.h"
 #include "framing.h"
 #include "crc16.h"
-#include "string.h"
 
 static TM_state * statePtr;
 static TM_transport * transportPtr;
