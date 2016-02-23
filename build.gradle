@@ -169,6 +169,8 @@ model {
        }
     }
 
+    /* The following libraries are exclusively for testing Mbed distribution */
+
     bufferedSerialMock(NativeLibrarySpec) {
       sources {
         cpp {
@@ -201,5 +203,26 @@ model {
         }
       }
     }
+
+    telemetryMbedIntegrationtest(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "bufferedSerialMock"
+        lib library: "telemetryMbedVariant"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "integration_tests/cpp/mbed/"
+             include "**/*.cpp"
+          }
+          exportedHeaders {
+            srcDirs "integration_tests/cpp/mbed/"
+            include "**/*.hpp"
+          }
+        }
+      }
+    }
+
+
   }
 }
