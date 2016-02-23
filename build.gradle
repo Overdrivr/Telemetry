@@ -169,6 +169,31 @@ model {
        }
     }
 
+    /*
+     THE test vector generator. Whatever comes out of it is the reference.
+     It uses directly the original C-api in a native form to generate the test
+     vectors.
+     It generates a set of correct and incorrect vectors.
+     Distributions are tested against both of thoses and must decode all
+     corrects vectors and discard all incorrects.
+    */
+
+    testVectorsGenerator(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "telemetrypp"
+        lib library: "crc16pp"
+        lib library: "framingpp"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "src/testvectorsgenerator/cpp"
+             include "**/*.c", "**/*.cpp"
+          }
+        }
+      }
+    }
+
     /* The following libraries are exclusively for testing Mbed distribution */
 
     bufferedSerialMock(NativeLibrarySpec) {
@@ -203,6 +228,8 @@ model {
         }
       }
     }
+
+
 
     telemetryMbedIntegrationtest(NativeExecutableSpec) {
       binaries.all {
