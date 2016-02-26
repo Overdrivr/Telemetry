@@ -74,6 +74,11 @@ task distributeMbed() {
   dependsOn << copyMbedInterfaceAndDriver
 }
 
+clean.doFirst {
+    delete "${rootDir}/dist/"
+    println "${rootDir}/dist/"
+}
+
 model {
   buildTypes {
       debug
@@ -178,19 +183,11 @@ model {
      corrects vectors and discard all incorrects.
     */
 
-    testVectorsGenerator(NativeExecutableSpec) {
+    testvectorsgenerator(NativeExecutableSpec) {
       binaries.all {
-        lib library: "telemetrypp"
-        lib library: "crc16pp"
-        lib library: "framingpp"
-      }
-      sources {
-        cpp {
-          source {
-             srcDirs "src/testvectorsgenerator/cpp"
-             include "**/*.c", "**/*.cpp"
-          }
-        }
+        lib library: "telemetry"
+        lib library: "crc16"
+        lib library: "framing"
       }
     }
 
