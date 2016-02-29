@@ -21,17 +21,17 @@ class BufferedSerial
     BufferedSerial(pin fakeTX, pin fakeRX);
     ~BufferedSerial();
 
-    baud(uint32_t bauds);
+    void baud(uint32_t bauds);
 
-    getc();
+    uint8_t getc();
 
-    readable();
+    int32_t readable();
 
-    write(void * data, uint32_t bufSize);
-    writeable();
+    int32_t write(void * data, uint32_t bufSize);
+    int32_t writeable();
 
   private:
-    std::queue<char> loopqueue;
+    std::queue<uint8_t> loopqueue;
 };
 
 #endif

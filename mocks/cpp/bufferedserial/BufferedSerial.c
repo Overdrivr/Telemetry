@@ -9,33 +9,33 @@ BufferedSerial::~BufferedSerial()
 {
 }
 
-BufferedSerial::baud(uint32_t bauds)
+void BufferedSerial::baud(uint32_t bauds)
 {
 }
 
-BufferedSerial::getc()
+uint8_t BufferedSerial::getc()
 {
   if(this->loopqueue.empty())
-    throw std::runtime_error("Trying to get character from empty queue");
-  char c = this->loopqueue.front();
+    throw std::runtime_error("Trying to get uint8_tacter from empty queue");
+  uint8_t c = this->loopqueue.front();
   this->loopqueue.pop();
   return c;
 }
 
-BufferedSerial::readable()
+int32_t BufferedSerial::readable()
 {
   return this->loopqueue.size();
 }
 
-BufferedSerial::write(void * data, uint32_t bufSize)
+int32_t BufferedSerial::write(void * data, uint32_t bufSize)
 {
-  char * caster = static_cast<char*>(data);
+  uint8_t * caster = static_cast<uint8_t*>(data);
 
   for(uint32_t i = 0 ; i < bufSize ; i++)
     this->loopqueue.push(caster[i]);
 }
 
-BufferedSerial::writeable()
+int32_t BufferedSerial::writeable()
 {
   return 1;
 }
