@@ -4,6 +4,8 @@ class Telemetry
 {
     public:
       Telemetry(uint32_t bauds = 9600);
+
+      TM_transport * get_transport();
       // Need different names from C API otherwise calling a method will call
       // this method again and again
       void pub(const char * topic, char * msg);
