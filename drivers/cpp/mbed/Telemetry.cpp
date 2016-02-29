@@ -43,7 +43,7 @@ TM_transport * Telemetry::get_transport()
   return &transport;
 }
 
-void Telemetry::pub(const char * topic, char * msg)
+void Telemetry::pub(const char * topic, const char * msg)
 {
     publish(topic,msg);
 }

@@ -8,7 +8,7 @@ class Telemetry
       TM_transport * get_transport();
       // Need different names from C API otherwise calling a method will call
       // this method again and again
-      void pub(const char * topic, char * msg);
+      void pub(const char * topic, const char * msg);
       void pub_u8(const char * topic, uint8_t msg);
       void pub_u16(const char * topic, uint16_t msg);
       void pub_u32(const char * topic, uint32_t msg);
