@@ -97,8 +97,8 @@ void update_telemetry(float elapsedTime)
     return;
 
   uint32_t amount = transportPtr->readable();
-
-  for(uint32_t i = 0 ; i < amount ; i++)
+  uint32_t i = 0 ;
+  for(i = 0 ; i < amount ; i++)
   {
     uint8_t c;
     transportPtr->read(&c,1);
@@ -122,7 +122,8 @@ uint16_t header(TM_type type)
 uint16_t topic(const char * t, uint16_t crc)
 {
   const uint8_t * ptr = (uint8_t*)t;
-  for(uint32_t i = 0 ; i < strlen(t) ; i++)
+  uint32_t i = 0 ;
+  for(i = 0 ; i < strlen(t) ; i++)
   {
     // TODO : Replace with Huffman compression
     append(ptr[i]);
@@ -136,7 +137,8 @@ uint16_t topic(const char * t, uint16_t crc)
 uint16_t payload(const void * p, uint32_t size, uint16_t crc)
 {
   const uint8_t * ptr = (uint8_t*)p;
-  for(uint32_t i = 0 ; i < size ; i++)
+  uint32_t i = 0 ;
+  for(i = 0 ; i < size ; i++)
   {
     append(ptr[i]);
     crc = crc16_recursive(ptr[i], crc);
