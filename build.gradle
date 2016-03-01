@@ -35,6 +35,16 @@ task copyToMbedDistribution(type: Copy) {
   include '**.c','**.h'
 }
 
+task copyToArduinoDistribution(type: Copy) {
+  def d = new File('dist/arduino/c_api/')
+  d.mkdirs()
+
+  from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
+  into 'dist/arduino/c_api/'
+  include '**.c','**.h'
+}
+
 task copyCppInterfaceAndDriver(type: Copy) {
   from '/cpp_interface/','/drivers/cpp/base/'
   into 'dist/cpp/'
@@ -47,14 +57,40 @@ task copyMbedInterfaceAndDriver(type: Copy) {
   include '**.c','**.h','**.cpp','**.hpp'
 }
 
-// distributes the C api.
+task copyArduinoInterfaceAndDriver(type: Copy) {
+  from '/cpp_interface/','/drivers/cpp/arduino/'
+  into 'dist/arduino/'
+  include '**.c','**.h','**.cpp','**.hpp'
+}
+
+// Moves the generated test vector to the appropriate folder for tests
+// testVectorsGenerator generator must be build and executed first for the
+// file to be generated
+// TODO : Add both things as a dependency
+task moveTestVectorMbed(type: Copy) {
+  from '/build/install/testVectorsGenerator/debug/'
+  into '/build/install/mbedTest/debug/'
+  include 'valid_vectors.csv'
+}
+
+// Moves the generated test vector to the appropriate folder for tests
+// testVectorsGenerator generator must be build and executed first for the
+// file to be generated
+// TODO : Add both things as a dependency
+task moveTestVectorArduino(type: Copy) {
+  from '/build/install/testVectorsGenerator/debug/'
+  into '/build/install/arduinoTest/debug/'
+  include 'valid_vectors.csv'
+}
+
+// Generates the C dsitribution, untied to hardware
 // Copies files from src/ folders into dist/c folder
 // Copies driverBase.h file into dist/c
 task distributeC() {
   dependsOn << copyToCDistribution
 }
 
-// distributes the C++ api.
+// Generates the C++ distribution, untied to hardware
 // Copies files from src/ folders into dist/cpp folder
 // Copies driverBase.h file into dist/cpp
 // Copies interface/cpp/* into dist/cpp
@@ -64,7 +100,7 @@ task distributeCpp() {
   dependsOn << copyCppInterfaceAndDriver
 }
 
-// distributes the Mbed api.
+// Generates the Mbed distribution
 // Copies files from src/ folders into dist/cpp folder
 // Copies driverMbed.h file into dist/cpp
 // Copies interface/cpp/* into dist/cpp
@@ -74,14 +110,14 @@ task distributeMbed() {
   dependsOn << copyMbedInterfaceAndDriver
 }
 
-// Moves the generated test vector to the appropriate folder for tests
-// testVectorsGenerator generator must be build and executed first for the
-// file to be generated
-// TODO : Add both things as a dependency
-task moveTestVector(type: Copy) {
-  from '/build/install/testVectorsGenerator/debug/'
-  into '/build/install/mbedTest/debug/'
-  include 'valid_vectors.csv'
+// Generates the Arduino distribution
+// Copies files from src/ folders into dist/cpp folder
+// Copies driverMbed.h file into dist/cpp
+// Copies interface/cpp/* into dist/cpp
+
+task distributeArduino() {
+  dependsOn << copyToArduinoDistribution
+  dependsOn << copyArduinoInterfaceAndDriver
 }
 
 clean.doFirst {
@@ -201,7 +237,7 @@ model {
       }
     }
 
-    /* The following libraries are exclusively for testing Mbed distribution */
+    /* The following libraries are exclusively for compiling and testing Mbed distribution */
 
     bufferedSerialMock(NativeLibrarySpec) {
       sources {
@@ -240,6 +276,59 @@ model {
       binaries.all {
         lib library: "bufferedSerialMock"
         lib library: "mbedDistribution"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "integration_tests/cpp/mbed/"
+             include "**/*.cpp"
+          }
+          exportedHeaders {
+            srcDirs "integration_tests/cpp/mbed/"
+            include "**/*.hpp"
+          }
+        }
+      }
+    }
+
+    /* The following libraries are exclusively for compiling and testing Arduino distribution */
+    hardwareSerialMock(NativeLibrarySpec) {
+      sources {
+        cpp {
+          source {
+             srcDirs "mocks/cpp/hardwareserial/"
+             include "HardwareSerial.cpp"
+          }
+          exportedHeaders {
+            srcDirs "mocks/cpp/hardwareserial/"
+            include "HardwareSerial.h"
+          }
+        }
+      }
+    }
+
+    arduinoDistribution(NativeLibrarySpec) {
+      binaries.all {
+        lib library: "hardwareSerialMock"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "dist/arduino/"
+             include "**/*.c", "**/*.cpp"
+          }
+          exportedHeaders {
+            srcDirs "dist/arduino/"
+            include "**/*.h", "**/*.hpp"
+          }
+        }
+      }
+    }
+
+    arduinoTest(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "hardwareSerialMock"
+        lib library: "arduinoDistribution"
       }
       sources {
         cpp {
