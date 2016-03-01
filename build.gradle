@@ -74,6 +74,16 @@ task distributeMbed() {
   dependsOn << copyMbedInterfaceAndDriver
 }
 
+// Moves the generated test vector to the appropriate folder for tests
+// testVectorsGenerator generator must be build and executed first for the
+// file to be generated
+// TODO : Add both things as a dependency
+task moveTestVector(type: Copy) {
+  from '/build/install/testVectorsGenerator/debug/'
+  into '/build/install/mbedTest/debug/'
+  include 'valid_vectors.csv'
+}
+
 clean.doFirst {
     delete "${rootDir}/dist/"
     println "${rootDir}/dist/"
@@ -183,7 +193,7 @@ model {
      corrects vectors and discard all incorrects.
     */
 
-    testvectorsgenerator(NativeExecutableSpec) {
+    testVectorsGenerator(NativeExecutableSpec) {
       binaries.all {
         lib library: "telemetry"
         lib library: "crc16"
@@ -208,7 +218,7 @@ model {
       }
     }
 
-    telemetryMbedVariant(NativeLibrarySpec) {
+    mbedDistribution(NativeLibrarySpec) {
       binaries.all {
         lib library: "bufferedSerialMock"
       }
@@ -226,12 +236,10 @@ model {
       }
     }
 
-
-
-    telemetryMbedIntegrationtest(NativeExecutableSpec) {
+    mbedTest(NativeExecutableSpec) {
       binaries.all {
         lib library: "bufferedSerialMock"
-        lib library: "telemetryMbedVariant"
+        lib library: "mbedDistribution"
       }
       sources {
         cpp {
