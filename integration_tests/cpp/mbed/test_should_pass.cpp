@@ -45,6 +45,12 @@ TEST_CASE( "Valid vectors test") {
         std::string entry;
         std::getline(valid_vectors,entry);
 
+        if(entry.size() == 0)
+        {
+            INFO("Test complete");
+            break;
+        }
+
         frametype = entry.substr(0, entry.find(delimiter));
         entry.erase(0, entry.find(delimiter) + delimiter.length());
 
@@ -70,9 +76,9 @@ TEST_CASE( "Valid vectors test") {
           frame.erase(0, 2);
         }
 
-        INFO("Testing vector conversion finished");
+        REQUIRE(frame.size() == 0);
 
-        size_t frameSize = expecteddata.size();
+        INFO("Testing vector conversion finished");
 
         if(frametype == "string")
         {
@@ -81,24 +87,25 @@ TEST_CASE( "Valid vectors test") {
         else if(frametype == "u8")
         {
             // convert message to u8
-            payload_u8 = strtol(message.data(),NULL,10);
+            payload_u8 = strtoul(message.data(),NULL,10);
             //std::cout << "payload "<< static_cast<int>(payload_u8) << std::endl;
             tm.pub_u8(topic.c_str(),payload_u8);
         }
         else if(frametype == "u16")
         {
-            payload_u16 = strtol(message.data(),NULL,10);
+            payload_u16 = strtoul(message.data(),NULL,10);
             tm.pub_u16(topic.c_str(),payload_u16);
         }
         else if(frametype == "u32")
         {
-            payload_u32 = strtol(message.data(),NULL,10);
+            payload_u32 = strtoul(message.data(),NULL,10);
             tm.pub_u32(topic.c_str(),payload_u32);
         }
         else if(frametype == "i8")
         {
             payload_i8 = strtol(message.data(),NULL,10);
-            tm.pub_i8(topic.c_str(),payload_u32);
+            //std::cout<<"Payload i8 : " << static_cast<int>(payload_i8)<<std::endl;
+            tm.pub_i8(topic.c_str(),payload_i8);
         }
         else if(frametype == "i16")
         {
@@ -110,20 +117,17 @@ TEST_CASE( "Valid vectors test") {
             payload_i32 = strtol(message.data(),NULL,10);
             tm.pub_i32(topic.c_str(),payload_i32);
         }
-        /*else if(frametype == "f32")
+        else if(frametype == "f32")
         {
-            payload_f32 = strtol(message.data(),NULL,10);
-            tm.pub_f32(topic.c_str(),payload_u32);
-        }*/
+            payload_f32 = strtof(message.data(),NULL);
+            tm.pub_f32(topic.c_str(),payload_f32);
+        }
         else
         {
-          FAIL("Frametype " << frametype << "frametype not supported yet");
+          FAIL("Frametype " << frametype << " not supported yet");
         }
 
         int32_t bytesWritten = mockTransport->readable();
-
-        REQUIRE(bytesWritten > 0);
-        REQUIRE(bytesWritten == frameSize);
 
         rawserialdata.clear();
 
@@ -136,10 +140,13 @@ TEST_CASE( "Valid vectors test") {
           char buffer[10];
           sprintf(buffer, "%02x", c);
 
-          INFO("Compared " << buffer << " vs " << expecteddata.at(i));
+          INFO("Compared byte["<<i<<"]"<< buffer << " vs " << expecteddata.at(i));
 
           REQUIRE(strcmp(expecteddata.at(i).c_str(),buffer) == 0);
         }
+
+        REQUIRE(bytesWritten > 0);
+        REQUIRE(bytesWritten == expecteddata.size());
 
         // Restore read bytes into buffer
         for(size_t i = 0 ; i < rawserialdata.size() ; ++i)
@@ -150,6 +157,9 @@ TEST_CASE( "Valid vectors test") {
 
         // Check frame matches expected in process function
         tm.update();
+        // After update, nothing should be left inside transport
+        REQUIRE(mockTransport->readable() == 0);
+
     }
     valid_vectors.close();
 }
@@ -255,6 +265,20 @@ void process(TM_state * state, TM_msg * msg)
     REQUIRE(ret == 1);
     REQUIRE(ret);
     REQUIRE(curpayload == payload_i32);
+  }
+  else if(frametype == "f32")
+  {
+    REQUIRE(msg->type == TM_float32);
+
+    std::string curtopic(msg->topic);
+    REQUIRE(curtopic == topic);
+
+    float curpayload;
+    uint32_t ret = emplace_f32(msg, &curpayload);
+
+    REQUIRE(ret == 1);
+    REQUIRE(ret);
+    REQUIRE(curpayload == payload_f32);
   }
   else
   {
