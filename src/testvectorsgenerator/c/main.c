@@ -165,6 +165,7 @@ int main()
   newentry_u16(output, "fooqux", 256);
 
   newentry_u32(output, "ghij", 0);
+  newentry_u32(output, "test", 1);
   newentry_u32(output, "klmopq", 4294967295);
   newentry_u32(output, "rstuv", 65536);
 
