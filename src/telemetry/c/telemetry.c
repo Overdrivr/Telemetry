@@ -33,7 +33,7 @@ void init_telemetry(TM_transport * t)
   set_on_incoming_error(on_incoming_error);
 }
 
-void publish(const char * t, char * msg)
+void publish(const char * t, const char * msg)
 {
   frame(t,TM_string,msg,strlen(msg));
 }

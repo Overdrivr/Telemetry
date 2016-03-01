@@ -74,17 +74,33 @@ task distributeMbed() {
   dependsOn << copyMbedInterfaceAndDriver
 }
 
+// Moves the generated test vector to the appropriate folder for tests
+// testVectorsGenerator generator must be build and executed first for the
+// file to be generated
+// TODO : Add both things as a dependency
+task moveTestVector(type: Copy) {
+  from '/build/install/testVectorsGenerator/debug/'
+  into '/build/install/mbedTest/debug/'
+  include 'valid_vectors.csv'
+}
+
+clean.doFirst {
+    delete "${rootDir}/dist/"
+    println "${rootDir}/dist/"
+}
+
 model {
-    buildTypes {
-        debug
-        release
-    }
+  buildTypes {
+      debug
+      release
+  }
 
-    toolChains {
-      gcc(Gcc) {
+  toolChains {
+    gcc(Gcc) {
 
-      }
     }
+  }
+
   components {
     crc16(NativeLibrarySpec){
 
@@ -98,13 +114,6 @@ model {
         lib library: "framing"
       }
     }
-    main(NativeExecutableSpec) {
-        binaries.all {
-          lib library: "telemetry"
-          lib library: "crc16"
-          lib library: "framing"
-        }
-	  }
     tests(NativeExecutableSpec) {
        binaries.all {
          lib library: "telemetry"
@@ -113,66 +122,139 @@ model {
        }
      }
 
-   crc16pp(NativeLibrarySpec){
-     sources {
-          cpp {
-            source {
-                srcDirs "src/crc16/c"
-                include "**/*.c"
-            }
-            exportedHeaders {
-                srcDirs "src/crc16/headers"
-            }
+     crc16pp(NativeLibrarySpec){
+       sources {
+            cpp {
+              source {
+                  srcDirs "src/crc16/c"
+                  include "**/*.c"
+              }
+              exportedHeaders {
+                  srcDirs "src/crc16/headers"
+              }
+          }
         }
-      }
-   }
-   framingpp(NativeLibrarySpec) {
-     sources {
-          cpp {
-            source {
-                srcDirs "src/framing/c"
-                include "**/*.c"
-            }
-            exportedHeaders {
-                srcDirs "src/framing/headers"
-            }
-        }
-      }
-   }
-   telemetrypp(NativeLibrarySpec) {
-     binaries.all {
-       lib library: "crc16pp"
-       lib library: "framingpp"
      }
-     sources {
+     framingpp(NativeLibrarySpec) {
+       sources {
+            cpp {
+              source {
+                  srcDirs "src/framing/c"
+                  include "**/*.c"
+              }
+              exportedHeaders {
+                  srcDirs "src/framing/headers"
+              }
+          }
+        }
+     }
+     telemetrypp(NativeLibrarySpec) {
+       binaries.all {
+         lib library: "crc16pp"
+         lib library: "framingpp"
+       }
+       sources {
+            cpp {
+              source {
+                  srcDirs "src/telemetry/c"
+                  include "**/*.c"
+              }
+              exportedHeaders {
+                  srcDirs "src/telemetry/headers"
+              }
+          }
+        }
+     }
+     testspp(NativeExecutableSpec) {
+        binaries.all {
+          lib library: "telemetrypp"
+          lib library: "crc16pp"
+          lib library: "framingpp"
+        }
+        sources {
           cpp {
             source {
-                srcDirs "src/telemetry/c"
-                include "**/*.c"
+               srcDirs "src/tests/c"
+               include "**/*.c"
             }
             exportedHeaders {
-                srcDirs "src/telemetry/headers"
+               srcDirs "src/tests/headers"
             }
-        }
-      }
-   }
-   testspp(NativeExecutableSpec) {
-      binaries.all {
-        lib library: "telemetrypp"
-        lib library: "crc16pp"
-        lib library: "framingpp"
-      }
-      sources {
-           cpp {
-             source {
-                 srcDirs "src/tests/c"
-                 include "**/*.c"
-             }
-             exportedHeaders {
-                 srcDirs "src/tests/headers"
-             }
-         }
+          }
        }
     }
+
+    /*
+     THE test vector generator. Whatever comes out of it is the reference.
+     It uses directly the original C-api in a native form to generate the test
+     vectors.
+     It generates a set of correct and incorrect vectors.
+     Distributions are tested against both of thoses and must decode all
+     corrects vectors and discard all incorrects.
+    */
+
+    testVectorsGenerator(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "telemetry"
+        lib library: "crc16"
+        lib library: "framing"
+      }
+    }
+
+    /* The following libraries are exclusively for testing Mbed distribution */
+
+    bufferedSerialMock(NativeLibrarySpec) {
+      sources {
+        cpp {
+          source {
+             srcDirs "mocks/cpp/bufferedserial/"
+             include "BufferedSerial.c"
+          }
+          exportedHeaders {
+            srcDirs "mocks/cpp/bufferedserial/"
+            include "BufferedSerial.h"
+          }
+        }
+      }
+    }
+
+    mbedDistribution(NativeLibrarySpec) {
+      binaries.all {
+        lib library: "bufferedSerialMock"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "dist/mbed/"
+             include "**/*.c", "**/*.cpp"
+          }
+          exportedHeaders {
+            srcDirs "dist/mbed/"
+            include "**/*.h", "**/*.hpp"
+          }
+        }
+      }
+    }
+
+    mbedTest(NativeExecutableSpec) {
+      binaries.all {
+        lib library: "bufferedSerialMock"
+        lib library: "mbedDistribution"
+      }
+      sources {
+        cpp {
+          source {
+             srcDirs "integration_tests/cpp/mbed/"
+             include "**/*.cpp"
+          }
+          exportedHeaders {
+            srcDirs "integration_tests/cpp/mbed/"
+            include "**/*.hpp"
+          }
+        }
+      }
+    }
+
+
   }
 }

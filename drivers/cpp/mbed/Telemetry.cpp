@@ -38,7 +38,12 @@ Telemetry::Telemetry(uint32_t bauds)
     pc.baud(bauds);
 }
 
-void Telemetry::pub(const char * topic, char * msg)
+TM_transport * Telemetry::get_transport()
+{
+  return &transport;
+}
+
+void Telemetry::pub(const char * topic, const char * msg)
 {
     publish(topic,msg);
 }
