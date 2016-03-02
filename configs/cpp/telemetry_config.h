@@ -1,0 +1,6 @@
+#ifndef TELEMETRY_CONFIG_H_
+#define TELEMETRY_CONFIG_H_
+
+#define TELEMETRY_CPP_DISTRIBUTION
+
+#endif
