@@ -1,32 +1,29 @@
-#include "Telemetry.hpp"
-#include "c_api/telemetry_core.h"
-#include "BufferedSerial.h"
-
-static BufferedSerial pc(USBTX, USBRX);
+#include "Telemetry.h"
+#include "telemetry_core.h"
+#include "HardwareSerial.h"
 
 int32_t read(void * buf, uint32_t sizeToRead)
 {
-    *(uint8_t*)(buf) = pc.getc();
-    return 1;
+    return Serial.readBytes((char*)(buf), sizeToRead);
 }
 
 int32_t write(void * buf, uint32_t sizeToWrite)
 {
-    pc.write(buf,sizeToWrite);
+    Serial.write((char*)(buf),sizeToWrite);
     return 0;
 }
 
 int32_t readable()
 {
-    return pc.readable();
+    return Serial.available();
 }
 
 int32_t writeable()
 {
-    return pc.writeable();
+    return Serial.availableForWrite();
 }
 
-Telemetry::Telemetry(uint32_t bauds)
+Telemetry::Telemetry()
 {
     transport.read = read;
     transport.write = write;
@@ -34,13 +31,11 @@ Telemetry::Telemetry(uint32_t bauds)
     transport.writeable = writeable;
 
     init_telemetry(&transport);
-
-    pc.baud(bauds);
 }
 
 void Telemetry::begin(uint32_t bauds)
 {
-    pc.baud(bauds);
+    Serial.begin(bauds);
 }
 
 TM_transport * Telemetry::get_transport()

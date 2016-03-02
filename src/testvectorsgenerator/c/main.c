@@ -3,7 +3,7 @@
 // that should be identified successfully by any distribution
 // shoudlfail.md contains a set of non valid frames
 
-#include "telemetry.h"
+#include "telemetry_core.h"
 #include "stdio.h"
 
 FILE * output;

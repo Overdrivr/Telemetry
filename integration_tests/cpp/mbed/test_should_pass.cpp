@@ -1,6 +1,12 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
+
+#include "telemetry_config.h"
+#ifdef TELEMETRY_ARDUINO_DISTRIBUTION
+#include "Telemetry.h"
+#else
 #include "Telemetry.hpp"
+#endif
 #include <fstream>
 #include <sstream>
 #include <iostream>

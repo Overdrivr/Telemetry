@@ -1,5 +1,4 @@
 #include "test.h"
-#include "telemetry.h"
 
 /// Mock of transport (serial). write is piped back to read
 static uint8_t endBuffer[OUTGOING_BUFFER_SIZE];

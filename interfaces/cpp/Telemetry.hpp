@@ -1,13 +1,27 @@
+#ifndef TELEMETRY_HPP_
+#define TELEMETRY_HPP_
+
+#include "telemetry_config.h"
+
+#ifdef TELEMETRY_ARDUINO_DISTRIBUTION
+#include "telemetry_utils.h"
+#else
 #include "c_api/telemetry_utils.h"
+#endif
 
 class Telemetry
 {
     public:
+#ifdef TELEMETRY_ARDUINO_DISTRIBUTION
+      Telemetry();
+#else
       Telemetry(uint32_t bauds = 9600);
+#endif
+
+      void begin(uint32_t bauds = 9600);
 
       TM_transport * get_transport();
-      // Need different names from C API otherwise calling a method will call
-      // this method again and again
+
       void pub(const char * topic, const char * msg);
       void pub_u8(const char * topic, uint8_t msg);
       void pub_u16(const char * topic, uint16_t msg);
@@ -24,3 +38,5 @@ class Telemetry
     private:
       TM_transport transport;
 };
+
+#endif

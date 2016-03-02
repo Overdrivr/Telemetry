@@ -1,5 +1,4 @@
 #include "test.h"
-#include "telemetry.h"
 
 extern SUITE(emplace_message_suite);
 extern SUITE(emplace_uint_suite);
