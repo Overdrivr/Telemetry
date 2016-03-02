@@ -1,5 +1,5 @@
 #include "Telemetry.hpp"
-#include "c_api/telemetry.h"
+#include "c_api/telemetry_core.h"
 #include "BufferedSerial.h"
 
 static BufferedSerial pc(USBTX, USBRX);
@@ -35,6 +35,11 @@ Telemetry::Telemetry(uint32_t bauds)
 
     init_telemetry(&transport);
 
+    pc.baud(bauds);
+}
+
+void Telemetry::begin(uint32_t bauds)
+{
     pc.baud(bauds);
 }
 

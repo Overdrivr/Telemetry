@@ -1,5 +1,5 @@
-#include "Telemetry.hpp"
-#include "c_api/telemetry.h"
+#include "Telemetry.h"
+#include "telemetry_core.h"
 #include "HardwareSerial.h"
 
 int32_t read(void * buf, uint32_t sizeToRead)
@@ -23,7 +23,7 @@ int32_t writeable()
     return Serial.availableForWrite();
 }
 
-Telemetry::Telemetry(uint32_t bauds)
+Telemetry::Telemetry()
 {
     transport.read = read;
     transport.write = write;
@@ -31,7 +31,10 @@ Telemetry::Telemetry(uint32_t bauds)
     transport.writeable = writeable;
 
     init_telemetry(&transport);
+}
 
+void Telemetry::begin(uint32_t bauds)
+{
     Serial.begin(bauds);
 }
 
