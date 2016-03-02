@@ -1,5 +1,5 @@
-#ifndef TELEMETRY_H_
-#define TELEMETRY_H_
+#ifndef TELEMETRY_CORE_H_
+#define TELEMETRY_CORE_H_
 
 #include "stddef.h"
 #include "stdint.h"

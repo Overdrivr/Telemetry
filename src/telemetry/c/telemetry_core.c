@@ -1,4 +1,4 @@
-#include "telemetry.h"
+#include "telemetry_core.h"
 #include "framing.h"
 #include "crc16.h"
 
