@@ -119,6 +119,15 @@ task distributeMbed() {
   dependsOn << copyMbedInterfaceAndDriver
 }
 
+//TODO : add version to the zip
+task packMbed(type: Zip){
+  dependsOn << distributeMbed
+  from './dist/mbed/'
+  into './Telemetry/'
+  archiveName 'Telemetry-mbed.zip'
+}
+
+
 // Generates the Arduino distribution
 // Copies files from src/ folders into dist/cpp folder
 // Copies driverMbed.h file into dist/cpp
@@ -127,6 +136,14 @@ task distributeMbed() {
 task distributeArduino() {
   dependsOn << copyToArduinoDistribution
   dependsOn << copyArduinoInterfaceAndDriver
+}
+
+//TODO : add version to the zip
+task packArduino(type: Zip){
+  dependsOn << distributeArduino
+  from './dist/arduino/'
+  into './Telemetry/'
+  archiveName 'Telemetry-arduino.zip'
 }
 
 clean.doFirst {

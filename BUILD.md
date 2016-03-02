@@ -77,3 +77,10 @@ cd ../../../../
 ```
 
 If all tests passed, arduino library can be released with good confidence.
+
+```shell
+gradle packArduino
+```
+
+This last command will generate an archive of the distribution inside
+ `build/distributions/`
