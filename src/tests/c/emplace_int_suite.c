@@ -1,5 +1,4 @@
 #include "test.h"
-#include "telemetry.h"
 
 TEST emplace_int8()
 {

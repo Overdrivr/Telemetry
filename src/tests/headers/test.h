@@ -2,5 +2,7 @@
 #define TEST_H_
 
 #include "greatest.h"
+#include "telemetry_core.h"
+#include "telemetry_utils.h"
 
 #endif
