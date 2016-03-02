@@ -8,10 +8,10 @@ task copyToCDistribution(type: Copy) {
   def d = new File('dist/c/')
   d.mkdirs()
 
-  from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
-  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
-  '/drivers/c/base/'
-  into 'dist/c/'
+  from './src/crc16/c/','./src/crc16/headers/','./src/framing/c/',
+  './src/framing/headers/','./src/telemetry/c/', './src/telemetry/headers/',
+  './drivers/c/base/','./interfaces/c/','./version/','./configs/c/'
+  into './dist/c/'
   include '**.c','**.h'
 }
 
@@ -20,7 +20,8 @@ task copyToCppDistribution(type: Copy) {
   d.mkdirs()
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
-  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
+  './version/','./configs/cpp/'
   into 'dist/cpp/c_api/'
   include '**.c','**.h'
 }
@@ -30,36 +31,44 @@ task copyToMbedDistribution(type: Copy) {
   d.mkdirs()
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
-  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
+  './version/'
   into 'dist/mbed/c_api/'
   include '**.c','**.h'
 }
 
 task copyToArduinoDistribution(type: Copy) {
-  def d = new File('dist/arduino/c_api/')
+  def d = new File('dist/arduino/')
   d.mkdirs()
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
-  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/'
-  into 'dist/arduino/c_api/'
+  '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
+  './version/','./configs/arduino/'
+  into 'dist/arduino/'
+  rename { String fileName ->
+        fileName.replace('.c', '.cpp')
+    }
   include '**.c','**.h'
 }
 
 task copyCppInterfaceAndDriver(type: Copy) {
-  from '/cpp_interface/','/drivers/cpp/base/'
+  from '/interfaces/cpp/','/drivers/cpp/base/'
   into 'dist/cpp/'
   include '**.c','**.h','**.cpp','**.hpp'
 }
 
 task copyMbedInterfaceAndDriver(type: Copy) {
-  from '/cpp_interface/','/drivers/cpp/mbed/'
+  from '/interfaces/cpp/','/drivers/cpp/mbed/','./configs/mbed/'
   into 'dist/mbed/'
   include '**.c','**.h','**.cpp','**.hpp'
 }
 
 task copyArduinoInterfaceAndDriver(type: Copy) {
-  from '/cpp_interface/','/drivers/cpp/arduino/'
+  from '/interfaces/cpp/','/drivers/cpp/arduino/'
   into 'dist/arduino/'
+  rename { String fileName ->
+        fileName.replace('Telemetry.hpp', 'Telemetry.h')
+    }
   include '**.c','**.h','**.cpp','**.hpp'
 }
 
