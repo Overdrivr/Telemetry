@@ -78,3 +78,68 @@ uint32_t emplace_f32(TM_msg* m, float* dst)
   memcpy(dst,m->buffer,4);
   return 1;
 }
+
+
+uint32_t update(TM_msg * msg, const char *topic, char *var, size_t bufSize)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace(msg, var, bufSize);
+    
+   return 0;
+}
+
+uint32_t update_u8(TM_msg * msg, const char *topic, uint8_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_u8(msg, var);
+
+   return 0;
+}
+
+uint32_t update_u16(TM_msg * msg, const char *topic, uint16_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_u16(msg, var);
+
+   return 0;
+}
+
+uint32_t update_u32(TM_msg * msg, const char *topic, uint32_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+     return emplace_u32(msg, var);
+
+   return 0;
+}
+
+uint32_t update_i8(TM_msg * msg, const char *topic, int8_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_i8(msg, var);
+
+   return 0;
+}
+
+uint32_t update_i16(TM_msg * msg, const char *topic, int16_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_i16(msg, var);
+
+   return 0;
+}
+
+uint32_t update_i32(TM_msg * msg, const char *topic, int32_t *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_i32(msg, var);
+
+   return 0;
+}
+
+uint32_t update_f32(TM_msg * msg, const char *topic, float *var)
+{
+   if(strcmp(topic,msg->topic) == 0)
+    return emplace_f32(msg, var);
+
+   return 0;
+}
