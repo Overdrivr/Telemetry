@@ -53,16 +53,16 @@ uint32_t emplace_i32(TM_msg * m, int32_t * dst);
 uint32_t emplace_f32(TM_msg * m, float * dst);
 
 
-// Decodes TM_msg buffer and update its value into dst if matching topic 
+// Decodes TM_msg buffer and update its value into dst if matching topic
 // Returns 0 if decoding was successful
-uint32_t update(TM_msg * msg, char *topic, char *var, size_t bufSize);
-uint32_t update_u8(TM_msg * msg, char *topic, uint8_t *var);
-uint32_t update_u16(TM_msg * msg, char *topic, uint16_t *var);
-uint32_t update_u32(TM_msg * msg, char *topic, uint32_t *var);
-uint32_t update_i8(TM_msg * msg, char *topic, int8_t *var);
-uint32_t update_i16(TM_msg * msg, char *topic, int16_t *var);
-uint32_t update_i32(TM_msg * msg, char *topic, int32_t *var);
-uint32_t update_f32(TM_msg * msg, char *topic, float *var);
+uint32_t update(TM_msg * msg, const char *topic, char *var, size_t bufSize);
+uint32_t update_u8(TM_msg * msg, const char *topic, uint8_t *var);
+uint32_t update_u16(TM_msg * msg, const char *topic, uint16_t *var);
+uint32_t update_u32(TM_msg * msg, const char *topic, uint32_t *var);
+uint32_t update_i8(TM_msg * msg, const char *topic, int8_t *var);
+uint32_t update_i16(TM_msg * msg, const char *topic, int16_t *var);
+uint32_t update_i32(TM_msg * msg, const char *topic, int32_t *var);
+uint32_t update_f32(TM_msg * msg, const char *topic, float *var);
 
 
 #endif
