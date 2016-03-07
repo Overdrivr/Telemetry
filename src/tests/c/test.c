@@ -13,7 +13,7 @@ extern SUITE(pub_sub_float_suite);
 extern SUITE(update_message_suite);
 extern SUITE(update_uint_suite);
 extern SUITE(update_int_suite);
-
+extern SUITE(update_float_suite);
 GREATEST_MAIN_DEFS();
 
 int main(int argc, char **argv) {

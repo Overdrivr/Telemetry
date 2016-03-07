@@ -12,7 +12,7 @@ TEST update_float32()
 
   float destination;
 
-  if(!emplace_u8(&dummy, "float32",  &destination))
+  if(!update_float32(&dummy, "float32",  &destination))
   {
     FAIL();
   }
@@ -33,7 +33,7 @@ TEST update_float32_neg()
 
   float destination;
 
-  if(!emplace_u8(&dummy, "float32_neg",  &destination))
+  if(!update_float32(&dummy, "float32_neg",  &destination))
   {
     FAIL();
   }
@@ -55,7 +55,7 @@ TEST update_float32_decimals()
 
   float destination;
 
-  if(!emplace_u8(&dummy, "float32_decimals",  &destination))
+  if(!update_float32(&dummy, "float32_decimals",  &destination))
   {
     FAIL();
   }
@@ -67,7 +67,7 @@ TEST update_float32_decimals()
 
 
 
-SUITE(emplace_int_suite) {
+SUITE(update_float_suite) {
   RUN_TEST(update_float32);
   RUN_TEST(update_float32_neg);
   RUN_TEST(update_float32_decimals);
