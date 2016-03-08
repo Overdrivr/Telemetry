@@ -54,6 +54,13 @@ cd ../../../../
 
 If all tests passed, mbed library can be released with good confidence.
 
+```shell
+gradle packMbed
+```
+
+This last command will generate an archive of the distribution inside
+ `build/distributions/`
+
 ## arduino distribution
 
 Generates the Arduino distribution by taking files inside `src/`,
