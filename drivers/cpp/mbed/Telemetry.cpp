@@ -91,8 +91,7 @@ void Telemetry::pub_f32(const char * topic, float msg)
 void Telemetry::sub(void (*callback)(TM_state * s, TM_msg * m),
                     TM_state* userData)
 {
-    set_state(userData);
-    subscribe(callback);
+    subscribe(callback,userData);
 }
 
 void Telemetry::update()
