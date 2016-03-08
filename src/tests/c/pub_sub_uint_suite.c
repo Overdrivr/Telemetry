@@ -93,9 +93,8 @@ TEST publish_uint8()
   uint8_t value = 255;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_uint);
+  subscribe(callback_uint,&state);
 
   publish_u8(topic, value);
 
@@ -132,9 +131,8 @@ TEST publish_uint16()
   uint16_t value = 65535;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_uint);
+  subscribe(callback_uint,&state);
 
   publish_u16(topic, value);
 
@@ -171,9 +169,8 @@ TEST publish_uint32()
   uint32_t value = 4294967295;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_uint);
+  subscribe(callback_uint,&state);
 
   publish_u32(topic, value);
 
