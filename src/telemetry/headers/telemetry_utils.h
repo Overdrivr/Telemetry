@@ -42,7 +42,7 @@ struct TM_transport {
 };
 
 // Decodes TM_msg buffer and emplaces its value into dst
-// Returns 0 if decoding was successful
+// Returns 1 (true) if decoding was successful
 uint32_t emplace(TM_msg * m, char * buf, size_t bufSize);
 uint32_t emplace_u8(TM_msg * m, uint8_t * dst);
 uint32_t emplace_u16(TM_msg * m, uint16_t * dst);
@@ -52,9 +52,16 @@ uint32_t emplace_i16(TM_msg * m, int16_t * dst);
 uint32_t emplace_i32(TM_msg * m, int32_t * dst);
 uint32_t emplace_f32(TM_msg * m, float * dst);
 
+// Returns 1 if topicToMatch matches m->topic
+//         0 otherwise
+uint32_t match(TM_msg * m, const char * topicToMatch);
+
+// Returns 1 if topicToMatch matches m->topic and typeToMatch matches m->type,
+//         0 otherwise
+uint32_t fullmatch(TM_msg * m, const char * topicToMatch, TM_type typeToMatch);
 
 // Decodes TM_msg buffer and update its value into dst if matching topic
-// Returns 0 if decoding was successful
+// Returns 1 (true) if decoding was successful
 uint32_t update(TM_msg * msg, const char *topic, char *var, size_t bufSize);
 uint32_t update_u8(TM_msg * msg, const char *topic, uint8_t *var);
 uint32_t update_u16(TM_msg * msg, const char *topic, uint16_t *var);
