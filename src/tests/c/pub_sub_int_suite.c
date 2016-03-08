@@ -94,9 +94,8 @@ TEST publish_int8()
   int8_t value = 127;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i8(topic, value);
 
@@ -133,9 +132,8 @@ TEST publish_int8_neg()
   int8_t value = -127;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i8(topic, value);
 
@@ -172,9 +170,8 @@ TEST publish_int16()
   int16_t value = 32767;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i16(topic, value);
 
@@ -211,9 +208,8 @@ TEST publish_int16_neg()
   int16_t value = -32767;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i16(topic, value);
 
@@ -250,9 +246,8 @@ TEST publish_int32()
   int32_t value = 2147483647;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i32(topic, value);
 
@@ -289,9 +284,8 @@ TEST publish_int32_neg()
   int32_t value = -2147483647;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_int);
+  subscribe(callback_int,&state);
 
   publish_i32(topic, value);
 

@@ -81,9 +81,8 @@ TEST publish_float()
   float value = 1.23E4;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_float);
+  subscribe(callback_float,&state);
 
   publish_f32(topic, value);
 
@@ -120,9 +119,8 @@ TEST publish_float_neg()
   float value = -1.23E4;
 
   init_telemetry(&transport);
-  set_state(&state);
 
-  subscribe(callback_float);
+  subscribe(callback_float,&state);
 
   publish_f32(topic, value);
 

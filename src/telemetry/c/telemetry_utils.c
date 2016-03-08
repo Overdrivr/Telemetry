@@ -79,12 +79,27 @@ uint32_t emplace_f32(TM_msg* m, float* dst)
   return 1;
 }
 
+uint32_t match(TM_msg * m, const char * topicToMatch)
+{
+  if(strcmp(m->topic,topicToMatch) == 0)
+    return 1;
+
+  return 0;
+}
+
+uint32_t fullmatch(TM_msg * m, const char * topicToMatch, TM_type typeToMatch)
+{
+  if(strcmp(m->topic,topicToMatch) == 0 && m->type == typeToMatch)
+    return 1;
+
+  return 0;
+}
 
 uint32_t update(TM_msg * msg, const char *topic, char *var, size_t bufSize)
 {
    if(strcmp(topic,msg->topic) == 0)
     return emplace(msg, var, bufSize);
-    
+
    return 0;
 }
 
@@ -130,15 +145,15 @@ uint32_t update_i16(TM_msg * msg, const char *topic, int16_t *var)
 
 uint32_t update_i32(TM_msg * msg, const char *topic, int32_t *var)
 {
-   if(strcmp(topic,msg->topic) == 0)
-    return emplace_i32(msg, var);
+    if(strcmp(topic,msg->topic) == 0)
+      return emplace_i32(msg, var);
 
    return 0;
 }
 
 uint32_t update_f32(TM_msg * msg, const char *topic, float *var)
 {
-   if(strcmp(topic,msg->topic) == 0)
+  if(strcmp(topic,msg->topic) == 0)
     return emplace_f32(msg, var);
 
    return 0;
