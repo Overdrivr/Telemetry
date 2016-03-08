@@ -9,7 +9,7 @@ gradlew installTestsDebugExecutable
 
 Runs core tests
 ```shell
-cd ./build/install/tests/debug/tests.bat
+cd ./build/install/tests/debug/
 tests.bat
 cd ../../../../
 ```
