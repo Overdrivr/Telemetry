@@ -20,9 +20,9 @@ void publish_i16(const char * topic, int16_t msg);
 void publish_i32(const char * topic, int32_t msg);
 void publish_f32(const char * topic, float msg);
 
-void set_state(TM_state * s);
-
-void subscribe(void (*callback)(TM_state * s, TM_msg * m));
+// subscribe a function to be called everytime a frame is received
+// second argument is a data structure that you can implement to access your program data inside the function
+void subscribe(void (*callback)(TM_state * s, TM_msg * m), TM_state * s);
 
 void update_telemetry(float elapsedTime);
 

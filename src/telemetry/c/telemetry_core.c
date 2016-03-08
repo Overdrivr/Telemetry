@@ -80,13 +80,9 @@ void publish_f32(const char * t, float    msg)
   frame(t,TM_float32,ptr,4);
 }
 
-void set_state(TM_state * s)
+void subscribe(void (*callback)(TM_state* s, TM_msg* m), TM_state * s)
 {
   statePtr = s;
-}
-
-void subscribe(void (*callback)(TM_state* s, TM_msg* m))
-{
   userCallback = callback;
 }
 
