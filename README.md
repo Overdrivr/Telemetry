@@ -1,25 +1,57 @@
+[![Join the chat at  https://gitter.im/Overdrivr/pytelemetry](https://badges.gitter.im/Overdrivr/pytelemetry.svg)](https://gitter.im/Overdrivr/pytelemetry?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
 [![Twitter Follow](https://img.shields.io/twitter/follow/@remibgs.svg?style=social)](https://twitter.com/remibgs)
 ## Overview
-`Telemetry` provides effortless communication between a computer and an embedded device.
+`Telemetry` provides effortless communication and data visualization between a computer and an embedded device.
 
-Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language with an equivalent in Python (Pytelemetry).
+Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language and Python (`Pytelemetry`).
 
 ![Overview](https://raw.githubusercontent.com/Overdrivr/Telemetry/master/pubsub_overview.png)
 
 Data is exchanged on named channels, called *topics*. `foo`, `bar` and `qux` are all topics on the figure above.
 
-`Telemetry` lets you attach your own C function to a topic. Each time this specific topic is received, your C function will be called and you will receive the associated data as an input parameter.
+`Telemetry` lets you attach your own C function to be notified each time a new frame is received. A collection of functions in the library can then help you update program parameters, or execute specific code when a specific topic is received, etc.
 
-## Why using it ?
+## Motivation
 
-Telemetry is for you if :
+This tool was designed with five objectives in mind.
 
-* you are constantly re-writing custom protocols on top of the serial port
-* you need a **reliable** and **error-tolerant** communication protocol for an application
-* you are using `printf` to debug your embedded application (and looking for a better alternative)
-* you want to finely tune some parameter on the device without loosing time compiling & flashing over and over
-* you want to **plot** parameters of your embedded application in **real-time**
+* **Fast prototyping and debugging**. Set everything up in a few minutes and start debugging any embedded device efficiently. Forget about printf. Forever.
+* **Communication-based applications**. Stop re-writing custom protocols for each new project.
+* **Remote update of parameters**. Tune your embedded application without loosing time compiling & flashing just for parameter tuning.
+* **Data plotting**. Plot data from the device in no time. Standard linear data is supported, but also arrays, sparse arrays. In the future, also Matrices, XYZ, and RGB-type codes.
+* **Reusability**. The protocol is highly flexible, loosely coupled to your application. It can be used in a wide number of application scenarios.
+
+## Snippet - Arduino
+Send an incrementing value on topic `count` and update variable **throttle** when receiving a new float value on topic `throttle`. Reset counter when throttle value is updated.
+
+```c
+#include <Telemetry.h>
+
+Telemetry TM;
+TM_state state;
+int32_t i = 0;
+
+struct TM_state {
+  float throttle;
+}
+
+void refresh(TM_state * state, TM_msg * msg) {
+    // If received topic is throttle, put new float value in state->throttle
+    if(update_f32(msg,"throttle",&(state->throttle)))
+      i = 0;
+}
+
+void setup() {
+  TM.begin(9600);
+  TM.subscribe(refresh, &state);
+}
+
+void loop() {
+  TM.pub_i32("count",i++);
+  delay(50);
+}
+```
 
 ## Python implementation [![PyPI version](https://badge.fury.io/py/pytelemetry.svg)](https://badge.fury.io/py/pytelemetry)
 
@@ -29,15 +61,20 @@ It is highly suitable for remote control of robots, RC cars, etc.
 
 ## The Command Line Interface [![PyPI version](https://badge.fury.io/py/pytelemetrycli.svg)](https://badge.fury.io/py/pytelemetrycli)
 
-[`pytelemetrycli`](https://github.com/Overdrivr/pytelemetrycli) is an awesome command line interface that allows direct communication with the device.
+[`pytelemetrycli`](https://github.com/Overdrivr/pytelemetrycli) is an awesome command line interface that allows direct communication with the device and immediate data visualization.
 
 Directly in a terminal, with a few commands, you can :
 * list all received topics
 * print samples from a given topic
 * publish data on a topic
 * open high-performance graphs that plots data from the device in real-time
-* (*to be done*) full logging of a communication session
+* full logging of a communication session
 * (*to be done*) replay step-by-step of a session for deep analysis
 
-## Setup & Utilisation
-All the information is in the [Wiki](https://github.com/Overdrivr/Telemetry/wiki).
+## Documentation
+
+* [Overview of the library](https://github.com/Overdrivr/Telemetry/wiki/Overview)
+* [Protocol description](https://github.com/Overdrivr/Telemetry/wiki/Protocol-description)
+* [A non-exhaustive list of all the awesome features](https://github.com/Overdrivr/Telemetry/wiki/Awesome-features-overview)
+
+All the information can be found from the [Wiki Home](https://github.com/Overdrivr/Telemetry/wiki).
