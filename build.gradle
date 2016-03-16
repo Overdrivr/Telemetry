@@ -34,6 +34,9 @@ task copyToMbedDistribution(type: Copy) {
   '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
   './version/'
   into 'dist/mbed/c_api/'
+  rename { String fileName ->
+        fileName.replace('.c', '.cpp')
+    }
   include '**.c','**.h'
 }
 
