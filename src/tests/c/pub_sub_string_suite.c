@@ -10,7 +10,8 @@ int32_t read_str(void * buf, uint32_t sizeToRead)
   uint8_t * ptr = (uint8_t*)buf;
   int32_t rem = sizeWritten - sizeRead;
   uint16_t range = sizeToRead > rem ? rem : sizeToRead;
-  for(uint32_t i = 0 ; i < range ; i++)
+  int32_t i;
+  for(i = 0 ; i < range ; i++)
   {
     ptr[i] = endBuffer[sizeRead + i];
     sizeRead++;
@@ -27,7 +28,8 @@ int32_t write_str(void * buf, uint32_t sizeToWrite)
 {
   sizeWritten = sizeToWrite;
   uint8_t * ptr = (uint8_t*)buf;
-  for(uint32_t i = 0 ; i < sizeToWrite ; i++)
+  int32_t i;
+  for(i = 0 ; i < sizeToWrite ; i++)
   {
     endBuffer[i] = ptr[i];
   }
@@ -60,8 +62,8 @@ void callback_str(TM_state* s, TM_msg* m)
 TEST publish_string()
 {
   TM_state state;
-
-  for(uint16_t i = 0 ; i < OUTGOING_BUFFER_SIZE ; i++)
+  uint16_t i;
+  for(i = 0 ; i < OUTGOING_BUFFER_SIZE ; i++)
   {
     endBuffer[i] = 0;
     state.rcvTopic[i] = 0;

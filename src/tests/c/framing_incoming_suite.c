@@ -18,7 +18,8 @@ TEST framing_simple_feed()
   uint8_t incomingBuffer[12] = {0};
   complete = 0;
   rcv_size = 0;
-  for(uint32_t i = 0 ; i < 12 ; i++)
+  uint32_t i;
+  for(i = 0 ; i < 12 ; i++)
     rcv_data[i] = 0;
 
   initialize_framing();
@@ -27,7 +28,7 @@ TEST framing_simple_feed()
 
   uint8_t feed_data[] = {0xF7,0xFF,0x7F};
 
-  for(uint32_t i = 0 ; i < 3 ; i++)
+  for(i = 0 ; i < 3 ; i++)
   {
     feed(feed_data[i]);
   }
@@ -44,7 +45,8 @@ TEST framing_corrupted_then_valid_feed()
   uint8_t incomingBuffer[12] = {0};
   complete = 0;
   rcv_size = 0;
-  for(uint32_t i = 0 ; i < 12 ; i++)
+  uint32_t i;
+  for(i = 0 ; i < 12 ; i++)
     rcv_data[i] = 0;
 
   initialize_framing();
@@ -53,7 +55,7 @@ TEST framing_corrupted_then_valid_feed()
 
   uint8_t feed_data[] = {0xF7,0xFF,0xF7,0xDD,0x7F};
 
-  for(uint32_t i = 0 ; i < 5 ; i++)
+  for(i = 0 ; i < 5 ; i++)
   {
     feed(feed_data[i]);
   }
@@ -70,7 +72,9 @@ TEST framing_basic_escaping_feed()
   uint8_t incomingBuffer[12] = {0};
   complete = 0;
   rcv_size = 0;
-  for(uint32_t i = 0 ; i < 12 ; i++)
+  uint32_t i;
+
+  for(i = 0 ; i < 12 ; i++)
     rcv_data[i] = 0;
 
   initialize_framing();
@@ -79,7 +83,7 @@ TEST framing_basic_escaping_feed()
 
   uint8_t feed_data[] = {0xF7,0x7D,0xFF,0xDD,0x7F}; // useless ESC for test only
 
-  for(uint32_t i = 0 ; i < 5 ; i++)
+  for(i = 0 ; i < 5 ; i++)
   {
     feed(feed_data[i]);
   }
@@ -97,7 +101,9 @@ TEST framing_all_escaped_flags_feed()
   uint8_t incomingBuffer[12] = {0};
   complete = 0;
   rcv_size = 0;
-  for(uint32_t i = 0 ; i < 12 ; i++)
+  uint32_t i;
+
+  for(i = 0 ; i < 12 ; i++)
     rcv_data[i] = 0;
 
   initialize_framing();
@@ -106,7 +112,7 @@ TEST framing_all_escaped_flags_feed()
 
   uint8_t feed_data[] = {0xF7,0x7D,0x7F,0x7D,0xF7,0x7D,0x7D,0x7F};
 
-  for(uint32_t i = 0 ; i < 8 ; i++)
+  for(i = 0 ; i < 8 ; i++)
   {
     feed(feed_data[i]);
   }
@@ -125,7 +131,9 @@ TEST framing_overflowing_feed()
   uint8_t incomingBuffer[3] = {0};
   complete = 0;
   rcv_size = 0;
-  for(uint32_t i = 0 ; i < 12 ; i++)
+  uint32_t i;
+
+  for(i = 0 ; i < 12 ; i++)
     rcv_data[i] = 0;
 
   initialize_framing();
@@ -134,7 +142,7 @@ TEST framing_overflowing_feed()
 
   uint8_t feed_data[] = {0xF7,0x7D,0x7F,0x7D,0xF7,0x7D,0x7D,0x7F};
 
-  for(uint32_t i = 0 ; i < 8 ; i++)
+  for(i = 0 ; i < 8 ; i++)
   {
     feed(feed_data[i]);
   }
