@@ -7,7 +7,8 @@ environment:
     - platform: x64
 
 init:
-  - "set PATH = %PATH%;C:\\MinGW\\bin"
+  - "SET PATH = %PATH%;C:\\MinGW\\bin"
+  - "SET"
   - "C:\\MinGW\\bin\\gcc.exe -v"
   - "gcc.exe -v"
 
