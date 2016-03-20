@@ -16,7 +16,9 @@ TEST framing_simple_frame()
 
   uint8_t expected[] = {0xF7, 0xFF, 0x7F};
   uint16_t range = amount > 3 ? 3 : amount;
-  for(uint16_t i = 0 ; i < range ; i++)
+  uint16_t i;
+
+  for(i = 0 ; i < range ; i++)
   {
     ASSERT_EQ_FMT(expected[i],outgoingBuffer[i],"%x");
   }
@@ -41,7 +43,8 @@ TEST framing_with_escaping()
 
   uint8_t expected[] = {0xF7, 0x7D, 0xF7, 0x7D, 0x7F, 0x7D, 0x7D, 0x7F};
   uint16_t range = amount > 8 ? 8 : amount;
-  for(uint16_t i = 0 ; i < range ; i++)
+  uint32_t i;
+  for(i = 0 ; i < range ; i++)
   {
     ASSERT_EQ_FMT(expected[i],outgoingBuffer[i],"%x");
   }
