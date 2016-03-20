@@ -7,12 +7,11 @@ environment:
     - platform: x64
 
 init:
-  - "SET PATH = %PATH%;C:\\MinGW\\bin"
-  - "SET"
   - "C:\\MinGW\\bin\\gcc.exe -v"
-  - "gcc.exe -v"
 
 install:
+  - "SET PATH=%PATH%;C:\\MinGW\\bin"
+  - "gcc -v"
   - "cd %APPVEYOR_BUILD_FOLDER%"
   - "gradlew installTestsDebugExecutable"
   - "gradlew installTestVectorsGeneratorDebug"
