@@ -8,6 +8,8 @@ environment:
 
 init:
   - "set PATH = %PATH%;C:\\MinGW\\bin"
+  - "ECHO C:\\MinGW\\bin\\gcc.exe -v"
+  - "ECHO gcc.exe -v"
 
 install:
   - "cd %APPVEYOR_BUILD_FOLDER%"
