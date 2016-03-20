@@ -1,0 +1,19 @@
+version: 1.1.{build}-{branch}
+
+environment:
+  matrix:
+    - platform: x86
+
+    - platform: x64
+
+init:
+  - "set PATH = %PATH%;C:\\MinGW\\bin"
+
+install:
+  - "cd %APPVEYOR_BUILD_FOLDER%"
+  - "gradlew installTestsDebugExecutable"
+  - "gradlew installTestVectorsGeneratorDebug"
+
+test_script:
+  - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/tests/debug/"
+  - "tests.bat"
