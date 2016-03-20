@@ -23,7 +23,8 @@ int32_t readable()
 int32_t write(void * buf, uint32_t sizeToWrite)
 {
   uint8_t * caster = (uint8_t*)(buf);
-  for(uint32_t i = 0 ; i < sizeToWrite ; i++)
+  uint32_t i;
+  for(i = 0 ; i < sizeToWrite ; i++)
   {
       fprintf(output, "%02x", caster[i]);
   }
