@@ -1,3 +1,5 @@
+todo: Add links to the continuous integration servers
+
 ## commands recipe for regular build/test flow
 
 Compiles telemetry core modules (`src/crc16`, `src/framing`, `src/telemetry`)
