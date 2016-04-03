@@ -19,7 +19,7 @@
     the driver has no more available data
 
 */
-int32_t read(void * buf, uint32_t sizeToRead)
+int32_t read(uint8_t * buf, uint32_t sizeToRead)
 {
     // Exemple
     /*
@@ -44,7 +44,7 @@ int32_t read(void * buf, uint32_t sizeToRead)
   @returns 0 if everything went well.
 
 */
-int32_t write(void * buf, uint32_t sizeToWrite)
+int32_t write(uint8_t * buf, uint32_t sizeToWrite)
 {
     // Exemple
     /*

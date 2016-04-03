@@ -4,15 +4,15 @@
 
 static BufferedSerial pc(USBTX, USBRX);
 
-int32_t read(void * buf, uint32_t sizeToRead)
+int32_t read(uint8_t * buf, uint32_t sizeToRead)
 {
-    *(uint8_t*)(buf) = pc.getc();
+    buf[0] = pc.getc();
     return 1;
 }
 
-int32_t write(void * buf, uint32_t sizeToWrite)
+int32_t write(uint8_t * buf, uint32_t sizeToWrite)
 {
-    pc.write(buf,sizeToWrite);
+    pc.write((void*)(buf),sizeToWrite);
     return 0;
 }
 
