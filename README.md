@@ -2,10 +2,9 @@
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
 [![Twitter Follow](https://img.shields.io/twitter/follow/@remibgs.svg?style=social)](https://twitter.com/remibgs)
 ## Overview
-`Telemetry` provides effortless communication and data visualization between a computer and an embedded device.
+`Telemetry` provides powerful communication and data visualization between a computer and any embedded device. This framework is fully compatible and supported on ARM Mbed and Arduino.
 
 Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language and Python (`Pytelemetry`).
-
 ![Overview](https://raw.githubusercontent.com/Overdrivr/Telemetry/master/pubsub_overview.png)
 
 Data is exchanged on named channels, called *topics*. `foo`, `bar` and `qux` are all topics on the figure above.

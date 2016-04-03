@@ -1,4 +1,5 @@
-todo: Add links to the continuous integration servers
+## continuous integration
+[Project CI on Appveyor](https://ci.appveyor.com/project/Overdrivr/telemetry)
 
 ## commands recipe for regular build/test flow
 
