@@ -3,14 +3,17 @@
 
 TEST dictionnary_insert()
 {
-  install("foo","bar");
 
-  if(lookup("foo") == NULL)
+  struct nlist * hashtab[HASHSIZE];
+  init_table(hashtab);
+  install(hashtab, "foo", "bar");
+
+  if(lookup(hashtab, "foo") == NULL)
   {
     FAIL();
   }
 
-  if(lookup("bar") != NULL)
+  if(lookup(hashtab, "bar") != NULL)
   {
     FAIL();
   }
