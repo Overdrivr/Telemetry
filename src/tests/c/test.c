@@ -15,6 +15,7 @@ extern SUITE(update_uint_suite);
 extern SUITE(update_int_suite);
 extern SUITE(update_float_suite);
 extern SUITE(match_suite);
+extern SUITE(dictionnary_suite);
 
 GREATEST_MAIN_DEFS();
 
@@ -35,6 +36,7 @@ int main(int argc, char **argv) {
     RUN_SUITE(pub_sub_uint_suite);
     RUN_SUITE(pub_sub_int_suite);
     RUN_SUITE(pub_sub_float_suite);
+    RUN_SUITE(match_suite);
     RUN_SUITE(dictionnary_suite);
 
     GREATEST_MAIN_END();
