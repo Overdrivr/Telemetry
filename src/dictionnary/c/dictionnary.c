@@ -29,7 +29,7 @@ void init_entry(struct nlist * entry)
   entry->ptr_i8 = NULL;
   entry->ptr_i16 = NULL;
   entry->ptr_i32 = NULL;
-  entry->ptr_callback = NULL;
+  entry->ptr_function = NULL;
 }
 
 void init_table(struct nlist ** hashtab)
@@ -80,8 +80,29 @@ struct nlist * install(struct nlist ** hashtab, char * key, void * ptr, ptr_type
     // Set value
     switch(type)
     {
-        case ptr_float32:
+        case ptr_f32:
           np->ptr_f32 = (float *)(ptr);
+          break;
+        case ptr_u8:
+          np->ptr_u8 = (uint8_t *)(ptr);
+          break;
+        case ptr_u16:
+          np->ptr_u16 = (uint16_t *)(ptr);
+          break;
+        case ptr_u32:
+          np->ptr_u32 = (uint32_t *)(ptr);
+          break;
+        case ptr_i8:
+          np->ptr_i8 = (int8_t *)(ptr);
+          break;
+        case ptr_i16:
+          np->ptr_i16 = (int16_t *)(ptr);
+          break;
+        case ptr_i32:
+          np->ptr_i32 = (int32_t *)(ptr);
+          break;
+        case ptr_function:
+          np->ptr_function = ptr;
           break;
     }
 

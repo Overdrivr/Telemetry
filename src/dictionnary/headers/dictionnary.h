@@ -5,14 +5,14 @@
 
 typedef enum ptr_type ptr_type;
 enum ptr_type {
-  ptr_float32 = 0,
-  ptr_uint8 = 1,
-  ptr_uint16 = 2,
-  ptr_uint32 = 3,
-  ptr_int8 = 4,
-  ptr_int16 = 5,
-  ptr_int32 = 6,
-  ptr_callback_function = 8
+  ptr_f32 = 0,
+  ptr_u8 = 1,
+  ptr_u16 = 2,
+  ptr_u32 = 3,
+  ptr_i8 = 4,
+  ptr_i16 = 5,
+  ptr_i32 = 6,
+  ptr_function = 8
 };
 
 struct nlist { /* table entry: */
@@ -27,7 +27,7 @@ struct nlist { /* table entry: */
     int8_t    * ptr_i8;
     int16_t   * ptr_i16;
     int32_t   * ptr_i32;
-    void      * ptr_callback;
+    void      * ptr_function;
 };
 
 #define HASHSIZE 101
