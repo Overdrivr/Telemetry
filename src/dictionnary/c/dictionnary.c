@@ -20,6 +20,18 @@ char *strdup(char * s) /* make a duplicate of s */
     return p;
 }
 
+void init_entry(struct nlist * entry)
+{
+  entry->ptr_f32 = NULL;
+  entry->ptr_u8 = NULL;
+  entry->ptr_u16 = NULL;
+  entry->ptr_u32 = NULL;
+  entry->ptr_i8 = NULL;
+  entry->ptr_i16 = NULL;
+  entry->ptr_i32 = NULL;
+  entry->ptr_callback = NULL;
+}
+
 void init_table(struct nlist ** hashtab)
 {
   uint32_t i = 0;
@@ -30,13 +42,13 @@ void init_table(struct nlist ** hashtab)
 }
 
 /* lookup: look for s in hashtab */
-struct nlist *lookup(struct nlist ** hashtab, char * s)
+struct nlist *lookup(struct nlist ** hashtab, char * key)
 {
     struct nlist *np;
 
-    for (np = hashtab[hash(s)]; np != NULL; np = np->next)
+    for (np = hashtab[hash(key)]; np != NULL; np = np->next)
     {
-      if (strcmp(s, np->name) == 0)
+      if (strcmp(key, np->key) == 0)
       {
         return np; /* found */
       }
@@ -44,28 +56,34 @@ struct nlist *lookup(struct nlist ** hashtab, char * s)
     return NULL; /* not found */
 }
 
-/* install: put (name, defn) in hashtab */
-struct nlist *install(struct nlist ** hashtab, char * name, char * defn)
+struct nlist * install(struct nlist ** hashtab, char * key, void * ptr, ptr_type type)
 {
     struct nlist * np;
     unsigned hashval;
 
-    if ((np = lookup(hashtab, name)) == NULL)
+    if ((np = lookup(hashtab, key)) == NULL)
     {
+        // Allocate new hastable entry and initialize it
         np = (struct nlist *) malloc(sizeof(*np));
 
-        if (np == NULL || (np->name = strdup(name)) == NULL)
+        // If allocation failed
+        if (np == NULL || (np->key = strdup(key)) == NULL)
           return NULL;
 
-        hashval = hash(name);
+        init_entry(np);
+
+        hashval = hash(key);
         np->next = hashtab[hashval];
         hashtab[hashval] = np;
     }
-    else
-        free((void *) np->defn); /*free previous defn */
 
-    if ((np->defn = strdup(defn)) == NULL)
-       return NULL;
+    // Set value
+    switch(type)
+    {
+        case ptr_float32:
+          np->ptr_f32 = (float *)(ptr);
+          break;
+    }
 
     return np;
 }
