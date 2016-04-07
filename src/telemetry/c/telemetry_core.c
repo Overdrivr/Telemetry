@@ -1,12 +1,16 @@
 #include "telemetry_core.h"
 #include "framing.h"
 #include "crc16.h"
+#include "dictionnary.h"
 
 static TM_state * statePtr;
 static TM_transport * transportPtr;
 static uint8_t incomingBuffer[INCOMING_BUFFER_SIZE];
 static uint8_t outgoingBuffer[OUTGOING_BUFFER_SIZE];
 static char topicBuffer[TOPIC_BUFFER_SIZE];
+
+struct nlist * hashtab[HASHSIZE];
+
 
 static void (*userCallback)(TM_state * s, TM_msg * m);
 
@@ -31,6 +35,49 @@ void init_telemetry(TM_transport * t)
   outgoing_storage(outgoingBuffer, OUTGOING_BUFFER_SIZE);
   set_on_incoming_frame(on_incoming_frame);
   set_on_incoming_error(on_incoming_error);
+
+  // Setup update dictionnary
+  init_table(hashtab);
+}
+
+void attach(const char * name, void (*callback)(TM_msg * m))
+{
+    install(hashtab, name, (void*)(callback), ptr_function);
+}
+
+void attach_f32(const char * name, float * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_f32);
+}
+
+void attach_u8(const char * name, uint8_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_u8);
+}
+
+void attach_u16(const char * name, uint16_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_u16);
+}
+
+void attach_u32(const char * name, uint32_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_u32);
+}
+
+void attach_i8(const char * name, int8_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_i8);
+}
+
+void attach_i16(const char * name, int16_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_i16);
+}
+
+void attach_i32(const char * name, int32_t * variable)
+{
+    install(hashtab, name, (void*)(variable), ptr_i32);
 }
 
 void publish(const char * t, const char * msg)
@@ -178,6 +225,31 @@ void send(void * buf, uint32_t size)
   }
 }
 
+void try_update_hashtable(TM_msg * msg)
+{
+  struct nlist * np = lookup(hashtab, msg->topic);
+
+  // Topic not found
+  if(np == NULL)
+    return;
+
+  switch(msg->type)
+  {
+      case TM_float32:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_f32 == NULL)
+          break;
+        emplace_f32(msg, np->ptr_f32);
+        break;
+      case TM_uint8:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_u8 == NULL)
+          break;
+        emplace_u8(msg, np->ptr_u8);
+        break;
+  }
+}
+
 void on_incoming_frame(uint8_t * storage, uint32_t size)
 {
   if(size < 2)
@@ -230,7 +302,10 @@ void on_incoming_frame(uint8_t * storage, uint32_t size)
   packet.buffer = (void *)(ptr);
   packet.size = (uint32_t)payloadSize;
 
-  // Call callback
+  // Try update variable if found in hash table
+  try_update_hashtable(&packet);
+
+  // Call global handler
   userCallback(statePtr,&packet);
 }
 
