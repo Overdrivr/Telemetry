@@ -247,6 +247,36 @@ void try_update_hashtable(TM_msg * msg)
           break;
         emplace_u8(msg, np->ptr_u8);
         break;
+      case TM_uint16:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_u16 == NULL)
+          break;
+        emplace_u16(msg, np->ptr_u16);
+        break;
+      case TM_uint32:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_u32 == NULL)
+          break;
+        emplace_u32(msg, np->ptr_u32);
+        break;
+      case TM_int8:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_i8 == NULL)
+          break;
+        emplace_i8(msg, np->ptr_i8);
+        break;
+      case TM_int16:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_i16 == NULL)
+          break;
+        emplace_i16(msg, np->ptr_i16);
+        break;
+      case TM_int32:
+        // If hashtable has an entry of type float 32 under received topic
+        if (np->ptr_i32 == NULL)
+          break;
+        emplace_i32(msg, np->ptr_i32);
+        break;
   }
 }
 
