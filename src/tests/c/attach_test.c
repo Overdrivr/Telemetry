@@ -100,6 +100,68 @@ TEST test_attach_all_types()
   update_telemetry(0);
   ASSERT_EQ_FMT(127, value_u8, "%d");
 
+  // reset buffers
+  sizeWritten = 0;
+  sizeRead = 0;
+
+  uint16_t value_u16 = 65535;
+
+  attach_u16("qux",&value_u16);
+  publish_u16("qux", 127);
+  ASSERT_EQ_FMT(65535, value_u16, "%d");
+  update_telemetry(0);
+  ASSERT_EQ_FMT(127, value_u16, "%d");
+
+  // reset buffers
+  sizeWritten = 0;
+  sizeRead = 0;
+
+  uint32_t value_u32 = 4294967295;
+
+  attach_u32("qux",&value_u32);
+  publish_u32("qux", 0);
+  ASSERT_EQ_FMT(4294967295, value_u32, "%d");
+  update_telemetry(0);
+  ASSERT_EQ_FMT(0, value_u32, "%d");
+
+  // reset buffers
+  sizeWritten = 0;
+  sizeRead = 0;
+
+  int8_t value_i8 = -127;
+
+  attach_i8("foo",&value_i8);
+  publish_i8("foo", 127);
+  ASSERT_EQ_FMT(-127, value_i8, "%d");
+  update_telemetry(0);
+  ASSERT_EQ_FMT(127, value_i8, "%d");
+
+  // reset buffers
+  sizeWritten = 0;
+  sizeRead = 0;
+
+  // Test attach uint8 to topic foo
+  int16_t value_i16 = 32767;
+
+  attach_i16("qux",&value_i16);
+  publish_i16("qux", -32767);
+  ASSERT_EQ_FMT(32767, value_i16, "%d");
+  update_telemetry(0);
+  ASSERT_EQ_FMT(-32767, value_i16, "%d");
+
+  // reset buffers
+  sizeWritten = 0;
+  sizeRead = 0;
+
+  // Test attach uint8 to topic foo
+  int32_t value_i32 = 2147483647;
+
+  attach_i32("qux",&value_i32);
+  publish_i32("qux", -2147483647);
+  ASSERT_EQ_FMT(2147483647, value_i32, "%d");
+  update_telemetry(0);
+  ASSERT_EQ_FMT(-2147483647, value_i32, "%d");
+
   PASS();
 }
 
