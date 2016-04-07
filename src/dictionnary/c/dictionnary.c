@@ -42,7 +42,7 @@ void init_table(struct nlist ** hashtab)
 }
 
 /* lookup: look for s in hashtab */
-struct nlist *lookup(struct nlist ** hashtab, char * key)
+struct nlist *lookup(struct nlist ** hashtab, const char * key)
 {
     struct nlist *np;
 
@@ -56,7 +56,7 @@ struct nlist *lookup(struct nlist ** hashtab, char * key)
     return NULL; /* not found */
 }
 
-struct nlist * install(struct nlist ** hashtab, char * key, void * ptr, ptr_type type)
+struct nlist * install(struct nlist ** hashtab, const char * key, void * ptr, ptr_type type)
 {
     struct nlist * np;
     unsigned hashval;
