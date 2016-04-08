@@ -24,6 +24,6 @@ void publish_f32(const char * topic, float msg);
 // second argument is a data structure that you can implement to access your program data inside the function
 void subscribe(void (*callback)(TM_state * s, TM_msg * m), TM_state * s);
 
-void update_telemetry(float elapsedTime);
+void update_telemetry();
 
 #endif
