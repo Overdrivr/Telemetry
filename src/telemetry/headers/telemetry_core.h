@@ -9,6 +9,15 @@
 #define OUTGOING_BUFFER_SIZE 128
 #define TOPIC_BUFFER_SIZE 64
 
+void attach(const char * name, void (*callback)(TM_msg * m));
+void attach_f32(const char * name, float * variable);
+void attach_u8(const char * name, uint8_t * variable);
+void attach_u16(const char * name, uint16_t * variable);
+void attach_u32(const char * name, uint32_t * variable);
+void attach_i8(const char * name, int8_t * variable);
+void attach_i16(const char * name, int16_t * variable);
+void attach_i32(const char * name, int32_t * variable);
+
 void init_telemetry(TM_transport * t);
 
 void publish(const char * topic, const char * msg);

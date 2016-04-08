@@ -10,7 +10,8 @@ task copyToCDistribution(type: Copy) {
 
   from './src/crc16/c/','./src/crc16/headers/','./src/framing/c/',
   './src/framing/headers/','./src/telemetry/c/', './src/telemetry/headers/',
-  './drivers/c/base/','./interfaces/c/','./version/','./configs/c/'
+  './drivers/c/base/','./interfaces/c/','./version/','./configs/c/',
+  './src/dictionnary/c/','./src/dictionnary/headers/'
   into './dist/c/'
   include '**.c','**.h'
 }
@@ -21,7 +22,8 @@ task copyToCppDistribution(type: Copy) {
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
   '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
-  './version/','./configs/cpp/'
+  './version/','./configs/cpp/','./src/dictionnary/c/',
+  './src/dictionnary/headers/'
   into 'dist/cpp/c_api/'
   include '**.c','**.h'
 }
@@ -32,7 +34,7 @@ task copyToMbedDistribution(type: Copy) {
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
   '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
-  './version/'
+  './version/','./src/dictionnary/c/','./src/dictionnary/headers/'
   into 'dist/mbed/c_api/'
   rename { String fileName ->
         fileName.replace('.c', '.cpp')
@@ -46,7 +48,8 @@ task copyToArduinoDistribution(type: Copy) {
 
   from '/src/crc16/c/','/src/crc16/headers/','/src/framing/c/',
   '/src/framing/headers/','/src/telemetry/c/', '/src/telemetry/headers/',
-  './version/','./configs/arduino/'
+  './version/','./configs/arduino/','./src/dictionnary/c/',
+  './src/dictionnary/headers/'
   into 'dist/arduino/'
   rename { String fileName ->
         fileName.replace('.c', '.cpp')
@@ -173,10 +176,14 @@ model {
     framing(NativeLibrarySpec) {
 
     }
+    dictionnary(NativeLibrarySpec) {
+
+    }
     telemetry(NativeLibrarySpec) {
       binaries.all {
         lib library: "crc16"
         lib library: "framing"
+        lib library: "dictionnary"
       }
     }
     tests(NativeExecutableSpec) {
@@ -184,6 +191,7 @@ model {
          lib library: "telemetry"
          lib library: "crc16"
          lib library: "framing"
+         lib library: "dictionnary"
        }
      }
 
@@ -263,6 +271,7 @@ model {
         lib library: "telemetry"
         lib library: "crc16"
         lib library: "framing"
+        lib library: "dictionnary"
       }
     }
 

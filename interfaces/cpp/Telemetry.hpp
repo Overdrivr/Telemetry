@@ -20,6 +20,15 @@ class Telemetry
 
       void begin(uint32_t bauds = 9600);
 
+      //void attach_to(const char * topic, );
+      void attach_f32_to(const char * topic, float * variable);
+      void attach_u8_to(const char * topic, uint8_t * variable);
+      void attach_u16_to(const char * topic, uint16_t * variable);
+      void attach_u32_to(const char * topic, uint32_t * variable);
+      void attach_i8_to(const char * topic, int8_t * variable);
+      void attach_i16_to(const char * topic, int16_t * variable);
+      void attach_i32_to(const char * topic, int32_t * variable);
+
       TM_transport * get_transport();
 
       void pub(const char * topic, const char * msg);
