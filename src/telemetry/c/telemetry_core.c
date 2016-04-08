@@ -133,7 +133,7 @@ void subscribe(void (*callback)(TM_state* s, TM_msg* m), TM_state * s)
   userCallback = callback;
 }
 
-void update_telemetry(float elapsedTime)
+void update_telemetry()
 {
   // If user forgot to define transport by calling init_telemetry, abort
   if(!transportPtr)

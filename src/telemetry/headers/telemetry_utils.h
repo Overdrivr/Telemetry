@@ -35,9 +35,9 @@ struct TM_msg {
 // Data structure for holding transport interface
 typedef struct TM_transport TM_transport;
 struct TM_transport {
-  int32_t (*read)(void * buf, uint32_t sizeToRead);
+  int32_t (*read)(uint8_t * buf, uint32_t sizeToRead);
   int32_t (*readable)();
-  int32_t (*write)(void * buf, uint32_t sizeToWrite);
+  int32_t (*write)(uint8_t * buf, uint32_t sizeToWrite);
   int32_t (*writeable)();
 };
 

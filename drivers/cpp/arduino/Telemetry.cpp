@@ -2,12 +2,12 @@
 #include "telemetry_core.h"
 #include "HardwareSerial.h"
 
-int32_t read(void * buf, uint32_t sizeToRead)
+int32_t read(uint8_t * buf, uint32_t sizeToRead)
 {
     return Serial.readBytes((char*)(buf), sizeToRead);
 }
 
-int32_t write(void * buf, uint32_t sizeToWrite)
+int32_t write(uint8_t * buf, uint32_t sizeToWrite)
 {
     Serial.write((char*)(buf),sizeToWrite);
     return 0;
