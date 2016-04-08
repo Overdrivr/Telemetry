@@ -1,6 +1,7 @@
 [![Join the chat at  https://gitter.im/Overdrivr/pytelemetry](https://badges.gitter.im/Overdrivr/pytelemetry.svg)](https://gitter.im/Overdrivr/pytelemetry?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
-[![Twitter Follow](https://img.shields.io/twitter/follow/@remibgs.svg?style=social)](https://twitter.com/remibgs)
+[![Build status](https://ci.appveyor.com/api/projects/status/bglm8olo8kp8x1wr?svg=true)](https://ci.appveyor.com/project/Overdrivr/telemetry)
+
 ## Overview
 `Telemetry` provides powerful communication and data visualization between a computer and any embedded device. This framework is fully compatible and supported on ARM Mbed and Arduino.
 
@@ -28,22 +29,12 @@ Send an incrementing value on topic `count` and update variable **throttle** whe
 #include <Telemetry.h>
 
 Telemetry TM;
-TM_state state;
 int32_t i = 0;
-
-struct TM_state {
-  float throttle;
-}
-
-void refresh(TM_state * state, TM_msg * msg) {
-    // If received topic is throttle, put new float value in state->throttle
-    if(update_f32(msg,"throttle",&(state->throttle)))
-      i = 0;
-}
+float throttle;
 
 void setup() {
   TM.begin(9600);
-  TM.subscribe(refresh, &state);
+  TM.attach_f32_to("throttle", &throttle);
 }
 
 void loop() {
