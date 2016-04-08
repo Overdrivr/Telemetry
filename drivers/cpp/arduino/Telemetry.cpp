@@ -33,6 +33,41 @@ Telemetry::Telemetry()
     init_telemetry(&transport);
 }
 
+void Telemetry::attach_f32_to(const char * topic, float * variable)
+{
+    attach_f32(topic, variable);
+}
+
+void Telemetry::attach_u8_to(const char * topic, uint8_t * variable)
+{
+    attach_u8(topic, variable);
+}
+
+void Telemetry::attach_u16_to(const char * topic, uint16_t * variable)
+{
+    attach_u16(topic, variable);
+}
+
+void Telemetry::attach_u32_to(const char * topic, uint32_t * variable)
+{
+    attach_u32(topic, variable);
+}
+
+void Telemetry::attach_i8_to(const char * topic, int8_t * variable)
+{
+    attach_i8(topic, variable);
+}
+
+void Telemetry::attach_i16_to(const char * topic, int16_t * variable)
+{
+    attach_i16(topic, variable);
+}
+
+void Telemetry::attach_i32_to(const char * topic, int32_t * variable)
+{
+    attach_i32(topic, variable);
+}
+
 void Telemetry::begin(uint32_t bauds)
 {
     Serial.begin(bauds);
