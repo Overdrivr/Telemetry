@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-typedef enum ptr_type ptr_type;
+
 enum ptr_type {
   ptr_f32 = 0,
   ptr_u8 = 1,
@@ -14,6 +14,8 @@ enum ptr_type {
   ptr_i32 = 6,
   ptr_function = 8
 };
+
+typedef enum ptr_type ptr_type;
 
 struct nlist { /* table entry: */
     struct nlist *next; /* next entry in chain */
