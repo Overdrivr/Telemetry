@@ -1,9 +1,10 @@
 #include "dictionnary.h"
 #include "stdlib.h"
 #include "stdint.h"
+#include "string.h"
 
 /* hash: form hash value for string s */
-unsigned hash(char * s)
+unsigned hash(const char * s)
 {
     unsigned hashval;
     for (hashval = 0; *s != '\0'; s++)
@@ -11,7 +12,7 @@ unsigned hash(char * s)
     return hashval % HASHSIZE;
 }
 
-char *strdup(char * s) /* make a duplicate of s */
+char * strdup(const char * s) /* make a duplicate of s */
 {
     char *p;
     p = (char *) malloc(strlen(s)+1); /* +1 for ’\0’ */
