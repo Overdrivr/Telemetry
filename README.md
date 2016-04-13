@@ -2,15 +2,68 @@
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
 [![Build status](https://ci.appveyor.com/api/projects/status/bglm8olo8kp8x1wr?svg=true)](https://ci.appveyor.com/project/Overdrivr/telemetry)
 
-## Overview
-`Telemetry` provides powerful communication and data visualization between a computer and any embedded device. This framework is fully compatible and supported on ARM Mbed and Arduino.
+`Current status` *Active developement. API should remain globally stable. Test coverage decent. Need improvements to ease external contributions.*
 
-Telemetry is a lightweight, portable, fast and error-resilient point-to-point protocol. It is implemented in C language and Python (`Pytelemetry`).
+## Overview
+`Telemetry` enables easy communication and data visualization between a computer and any embedded platform, like `ARM Mbed` or `Arduino`.
+
+Specifically, `Telemetry` is a communication protocol, implemented in C language.
+
 ![Overview](https://raw.githubusercontent.com/Overdrivr/Telemetry/master/pubsub_overview.png)
 
-Data is exchanged on named channels, called *topics*. `foo`, `bar` and `qux` are all topics on the figure above.
+Data is exchanged on named channels, called *topics* (ex : `foo`, `bar` and `qux` on the figure above).
 
-`Telemetry` lets you attach your own C function to be notified each time a new frame is received. A collection of functions in the library can then help you update program parameters, or execute specific code when a specific topic is received, etc.
+Sending data is called *publishing*.
+
+```cpp
+Telemetry TM;
+int32_t i = 123;
+
+TM.pub_i32("foo", i);
+```
+
+Receiving data is called *subscribing*. Basically, `Telemetry` lets you attach variables and functions to topics.
+When fresh data is received under a topic, attached variables will be updated and attached functions will be called.
+
+```cpp
+Telemetry TM;
+float throttle;
+
+TM.attach_f32_to("throttle", &throttle);
+
+for(;;) {
+  TM.update();
+}
+```
+
+# Data visualization
+
+As soon as you start publishing, you can enjoy on your computer powerful data visualization using the
+[Pytelemetry Command Line Interface](https://github.com/Overdrivr/pytelemetrycli)
+[![PyPI version](https://badge.fury.io/py/pytelemetrycli.svg)](https://badge.fury.io/py/pytelemetrycli).
+
+The CLI is a python package that can be installed with `pip`, and runs on Windows, Mac OS and Linux.
+
+Directly in a terminal, with a few commands, you can :
+* list all received topics
+* print samples from a given topic
+* publish data on a topic
+* open high-performance graphs that plots data from the device in real-time
+* full logging of a communication session
+* (*to be done*) replay step-by-step of a session for deep analysis
+
+![Console example](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/console.png)
+
+![Plot example](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/graph.png)
+
+
+## Central documentation
+
+* [Overview of the library](https://github.com/Overdrivr/Telemetry/wiki/Overview)
+* [Protocol description](https://github.com/Overdrivr/Telemetry/wiki/Protocol-description)
+* [A non-exhaustive list of all the awesome features](https://github.com/Overdrivr/Telemetry/wiki/Awesome-features-overview)
+
+All the information can be found from the [Wiki Home](https://github.com/Overdrivr/Telemetry/wiki).
 
 ## Motivation
 
@@ -22,49 +75,10 @@ This tool was designed with five objectives in mind.
 * **Data plotting**. Plot data from the device in no time. Standard linear data is supported, but also arrays, sparse arrays. In the future, also Matrices, XYZ, and RGB-type codes.
 * **Reusability**. The protocol is highly flexible, loosely coupled to your application. It can be used in a wide number of application scenarios.
 
-## Snippet - Arduino
-Send an incrementing value on topic `count` and update variable **throttle** when receiving a new float value on topic `throttle`. Reset counter when throttle value is updated.
+*todo: list of alternatives*
 
-```c
-#include <Telemetry.h>
-
-Telemetry TM;
-int32_t i = 0;
-float throttle;
-
-void setup() {
-  TM.begin(9600);
-  TM.attach_f32_to("throttle", &throttle);
-}
-
-void loop() {
-  TM.pub_i32("count",i++);
-  delay(50);
-}
-```
-
-## Python implementation [![PyPI version](https://badge.fury.io/py/pytelemetry.svg)](https://badge.fury.io/py/pytelemetry)
+## Protocol implementation in python [![PyPI version](https://badge.fury.io/py/pytelemetry.svg)](https://badge.fury.io/py/pytelemetry)
 
 [`pytelemetry`](https://github.com/Overdrivr/pytelemetry) is the python equivalent of this protocol, and is 100% compatible.
-You can use it to write simple python scripts that communicate with the device, to send commands and update parameters in real time.
+You can use it (without the CLI) to write simple python scripts that communicate with the device, to send commands and update parameters in real time.
 It is highly suitable for remote control of robots, RC cars, etc.  
-
-## The Command Line Interface [![PyPI version](https://badge.fury.io/py/pytelemetrycli.svg)](https://badge.fury.io/py/pytelemetrycli)
-
-[`pytelemetrycli`](https://github.com/Overdrivr/pytelemetrycli) is an awesome command line interface that allows direct communication with the device and immediate data visualization.
-
-Directly in a terminal, with a few commands, you can :
-* list all received topics
-* print samples from a given topic
-* publish data on a topic
-* open high-performance graphs that plots data from the device in real-time
-* full logging of a communication session
-* (*to be done*) replay step-by-step of a session for deep analysis
-
-## Documentation
-
-* [Overview of the library](https://github.com/Overdrivr/Telemetry/wiki/Overview)
-* [Protocol description](https://github.com/Overdrivr/Telemetry/wiki/Protocol-description)
-* [A non-exhaustive list of all the awesome features](https://github.com/Overdrivr/Telemetry/wiki/Awesome-features-overview)
-
-All the information can be found from the [Wiki Home](https://github.com/Overdrivr/Telemetry/wiki).
