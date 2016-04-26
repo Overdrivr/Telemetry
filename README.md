@@ -1,6 +1,7 @@
 [![Join the chat at  https://gitter.im/Overdrivr/pytelemetry](https://badges.gitter.im/Overdrivr/pytelemetry.svg)](https://gitter.im/Overdrivr/pytelemetry?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/Overdrivr/pytelemetrycli.svg?label=ready&title=Ready)](http://waffle.io/Overdrivr/pytelemetrycli)
 [![Build status](https://ci.appveyor.com/api/projects/status/bglm8olo8kp8x1wr?svg=true)](https://ci.appveyor.com/project/Overdrivr/telemetry)
+[![Documentation](https://readthedocs.org/projects/telemetry-docs/badge/?version=latest)](http://telemetry-docs.readthedocs.org/en/latest/)
 
 `Current status` *Active developement. API should remain globally stable. Test coverage decent. Need improvements to ease external contributions.*
 
@@ -22,7 +23,7 @@ int32_t i = 123;
 TM.pub_i32("foo", i);
 ```
 
-Receiving data is called *subscribing*. Basically, `Telemetry` lets you attach variables and functions to topics.
+Receiving data is called *subscribing*. `Telemetry` lets you attach variables and functions to topics.
 When fresh data is received under a topic, attached variables will be updated and attached functions will be called.
 
 ```cpp
