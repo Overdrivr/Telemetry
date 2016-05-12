@@ -6,13 +6,29 @@ task copyCore(type: Copy) {
   def d = new File('dist/c/')
   d.mkdirs()
 
-  from './src/'
-  into './dist/c/'
+  from './src/telemetry/'
+  into './dist/Telemetry/'
   include '**/**.c','**/**.h'
 }
 
-task distribute() {
+task copyVersion(type: Copy) {
+  from '.'
+  into '/dist/Telemetry'
+  include 'telemetry_version.h'
+}
+
+task compress(type: Zip) {
   dependsOn << copyCore
+  dependsOn << copyVersion
+  from './dist/Telemetry/'
+  into '.'
+  archiveName 'Telemetry.zip'
+}
+
+task distribute() {
+  dependsOn << compress
+  dependsOn << copyCore
+  dependsOn << copyVersion
 }
 
 clean.doFirst {
