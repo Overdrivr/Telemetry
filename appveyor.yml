@@ -18,5 +18,5 @@ install:
   - "gradlew installTestDebugExecutable"
 
 test_script:
-  - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/tests/debug/"
-  - "tests.bat"
+  - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/test/debug/"
+  - "test.bat"
