@@ -16,7 +16,10 @@ install:
   - "gcc -v"
   - "cd %APPVEYOR_BUILD_FOLDER%"
   - "gradlew installTestDebugExecutable"
+  - "gradlew installTest_cppDebugExecutable"
 
 test_script:
   - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/test/debug/"
   - "test.bat"
+  - "cd ../../test_cpp/debug"
+  - "test_cpp.bat"
