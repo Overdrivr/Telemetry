@@ -5,15 +5,14 @@ static uint8_t endBuffer[OUTGOING_BUFFER_SIZE];
 static uint32_t sizeWritten;
 static uint32_t sizeRead;
 
-int32_t read_uint(void * buf, uint32_t sizeToRead)
+int32_t read_uint(uint8_t * buf, uint32_t sizeToRead)
 {
-  uint8_t * ptr = (uint8_t*)buf;
   int32_t rem = sizeWritten - sizeRead;
   uint16_t range = sizeToRead > rem ? rem : sizeToRead;
   int32_t i;
   for(i = 0 ; i < range ; i++)
   {
-    ptr[i] = endBuffer[sizeRead + i];
+    buf[i] = endBuffer[sizeRead + i];
     sizeRead++;
   }
 
@@ -24,14 +23,13 @@ int32_t readable_uint()
   return sizeWritten;
 }
 
-int32_t write_uint(void * buf, uint32_t sizeToWrite)
+int32_t write_uint(uint8_t * buf, uint32_t sizeToWrite)
 {
   sizeWritten = sizeToWrite;
-  uint8_t * ptr = (uint8_t*)buf;
   int32_t i;
   for(i = 0 ; i < sizeToWrite ; i++)
   {
-    endBuffer[i] = ptr[i];
+    endBuffer[i] = buf[i];
   }
 }
 
@@ -100,7 +98,7 @@ TEST publish_uint8()
 
   publish_u8(topic, value);
 
-  update_telemetry(0);
+  update_telemetry();
 
   ASSERT_EQ(state.called, 1);
   ASSERT_STR_EQ(topic,state.rcvTopic);
@@ -138,7 +136,7 @@ TEST publish_uint16()
 
   publish_u16(topic, value);
 
-  update_telemetry(0);
+  update_telemetry();
 
   ASSERT_EQ(state.called, 1);
   ASSERT_STR_EQ(topic,state.rcvTopic);
@@ -176,7 +174,7 @@ TEST publish_uint32()
 
   publish_u32(topic, value);
 
-  update_telemetry(0);
+  update_telemetry();
 
   ASSERT_EQ(state.called, 1);
   ASSERT_STR_EQ(topic,state.rcvTopic);
