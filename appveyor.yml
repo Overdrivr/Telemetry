@@ -15,9 +15,11 @@ install:
   - "SET PATH=%PATH%;C:\\MinGW\\bin"
   - "gcc -v"
   - "cd %APPVEYOR_BUILD_FOLDER%"
-  - "gradlew installTestsDebugExecutable"
-  - "gradlew installTestVectorsGeneratorDebug"
+  - "gradlew installTestDebugExecutable"
+  - "gradlew installTest_cppDebugExecutable"
 
 test_script:
-  - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/tests/debug/"
-  - "tests.bat"
+  - "cd  %APPVEYOR_BUILD_FOLDER%/build/install/test/debug/"
+  - "test.bat"
+  - "cd ../../test_cpp/debug"
+  - "test_cpp.bat"

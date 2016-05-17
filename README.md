@@ -3,9 +3,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/bglm8olo8kp8x1wr?svg=true)](https://ci.appveyor.com/project/Overdrivr/telemetry)
 [![Documentation](https://readthedocs.org/projects/telemetry-docs/badge/?version=latest)](http://telemetry-docs.readthedocs.org/en/latest/)
 
-`Current status` *Active developement. API should remain globally stable. Test coverage decent. Need improvements to ease external contributions.*
+`Current status` *Active development, good stability & test coverage. Documentation in writing*
 
-## Overview
+# Overview
 `Telemetry` enables easy communication and data visualization between a computer and any embedded platform, like `ARM Mbed` or `Arduino`.
 
 Specifically, `Telemetry` is a communication protocol, implemented in C language.
@@ -23,63 +23,50 @@ int32_t i = 123;
 TM.pub_i32("foo", i);
 ```
 
-Receiving data is called *subscribing*. `Telemetry` lets you attach variables and functions to topics.
+For receiving data, `Telemetry` lets you attach variables and functions to topics.
 When fresh data is received under a topic, attached variables will be updated and attached functions will be called.
 
 ```cpp
 Telemetry TM;
-float throttle;
+float thr;
 
-TM.attach_f32_to("throttle", &throttle);
+TM.attach_f32_to("throttle", &thr);
 
 for(;;) {
   TM.update();
 }
 ```
 
+# Wrappers
+
+Telemetry is written to be portable and general-purpose, and the core code is not tied to any hardware.
+
+Wrappers for specific platforms are written to provide a plug-and-play manner to use Telemetry:
+* [Arduino wrapper](https://github.com/Overdrivr/Telemetry-arduino)
+* [Mbed wrapper](https://github.com/Overdrivr/Telemetry-mbed) (Available also on [Mbed repository](https://developer.mbed.org/users/Overdrivr/code/telemetry/) )
+* Yotta (package manager) - in process
+
 # Data visualization
 
-As soon as you start publishing, you can enjoy on your computer powerful data visualization using the
-[Pytelemetry Command Line Interface](https://github.com/Overdrivr/pytelemetrycli)
+As soon as a device publishes data, it is possible to leverage the power of
+the [Pytelemetry Command Line Interface](https://github.com/Overdrivr/pytelemetrycli)
 [![PyPI version](https://badge.fury.io/py/pytelemetrycli.svg)](https://badge.fury.io/py/pytelemetrycli).
 
-The CLI is a python package that can be installed with `pip`, and runs on Windows, Mac OS and Linux.
+This terminal application lets you interact with the device, using simple commands.
 
-Directly in a terminal, with a few commands, you can :
-* list all received topics
-* print samples from a given topic
-* publish data on a topic
-* open high-performance graphs that plots data from the device in real-time
-* full logging of a communication session
-* (*to be done*) replay step-by-step of a session for deep analysis
+Opening a live plot is as simple as
 
-![Console example](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/console.png)
+```
+:> plot someTopic
+```
 
 ![Plot example](https://raw.githubusercontent.com/Overdrivr/pytelemetrycli/master/graph.png)
 
 
-## Central documentation
+# Central documentation
 
 * [Overview of the library](https://github.com/Overdrivr/Telemetry/wiki/Overview)
 * [Protocol description](https://github.com/Overdrivr/Telemetry/wiki/Protocol-description)
 * [A non-exhaustive list of all the awesome features](https://github.com/Overdrivr/Telemetry/wiki/Awesome-features-overview)
 
 All the information can be found from the [Wiki Home](https://github.com/Overdrivr/Telemetry/wiki).
-
-## Motivation
-
-This tool was designed with five objectives in mind.
-
-* **Fast prototyping and debugging**. Set everything up in a few minutes and start debugging any embedded device efficiently. Forget about printf. Forever.
-* **Communication-based applications**. Stop re-writing custom protocols for each new project.
-* **Remote update of parameters**. Tune your embedded application without loosing time compiling & flashing just for parameter tuning.
-* **Data plotting**. Plot data from the device in no time. Standard linear data is supported, but also arrays, sparse arrays. In the future, also Matrices, XYZ, and RGB-type codes.
-* **Reusability**. The protocol is highly flexible, loosely coupled to your application. It can be used in a wide number of application scenarios.
-
-*todo: list of alternatives*
-
-## Protocol implementation in python [![PyPI version](https://badge.fury.io/py/pytelemetry.svg)](https://badge.fury.io/py/pytelemetry)
-
-[`pytelemetry`](https://github.com/Overdrivr/pytelemetry) is the python equivalent of this protocol, and is 100% compatible.
-You can use it (without the CLI) to write simple python scripts that communicate with the device, to send commands and update parameters in real time.
-It is highly suitable for remote control of robots, RC cars, etc.  

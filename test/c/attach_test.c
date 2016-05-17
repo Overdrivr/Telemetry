@@ -6,15 +6,14 @@ static uint8_t endBuffer[OUTGOING_BUFFER_SIZE];
 static uint32_t sizeWritten;
 static uint32_t sizeRead;
 
-int32_t read(void * buf, uint32_t sizeToRead)
+int32_t read(uint8_t * buf, uint32_t sizeToRead)
 {
-  uint8_t * ptr = (uint8_t*)buf;
   int32_t rem = sizeWritten - sizeRead;
   uint16_t range = sizeToRead > rem ? rem : sizeToRead;
   int32_t i;
   for(i = 0 ; i < range ; i++)
   {
-    ptr[i] = endBuffer[sizeRead + i];
+    buf[i] = endBuffer[sizeRead + i];
     sizeRead++;
   }
 
@@ -25,14 +24,13 @@ int32_t readable()
   return sizeWritten;
 }
 
-int32_t write(void * buf, uint32_t sizeToWrite)
+int32_t write(uint8_t * buf, uint32_t sizeToWrite)
 {
   sizeWritten = sizeToWrite;
-  uint8_t * ptr = (uint8_t*)buf;
   int32_t i;
   for(i = 0 ; i < sizeToWrite ; i++)
   {
-    endBuffer[i] = ptr[i];
+    endBuffer[i] = buf[i];
   }
 }
 
@@ -62,7 +60,7 @@ TEST test_attach_all_types()
   {
     FAIL();
   }
-  update_telemetry(0);
+  update_telemetry();
   if((value - 0) > 0.001)
   {
     FAIL();
@@ -81,7 +79,7 @@ TEST test_attach_all_types()
   {
     FAIL();
   }
-  update_telemetry(0);
+  update_telemetry();
   if((value - 1.23) > 0.001)
   {
     FAIL();
@@ -97,7 +95,7 @@ TEST test_attach_all_types()
   attach_u8("foo",&value_u8);
   publish_u8("foo", 127);
   ASSERT_EQ_FMT(255, value_u8, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(127, value_u8, "%d");
 
   // reset buffers
@@ -109,7 +107,7 @@ TEST test_attach_all_types()
   attach_u16("qux",&value_u16);
   publish_u16("qux", 127);
   ASSERT_EQ_FMT(65535, value_u16, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(127, value_u16, "%d");
 
   // reset buffers
@@ -121,7 +119,7 @@ TEST test_attach_all_types()
   attach_u32("qux",&value_u32);
   publish_u32("qux", 0);
   ASSERT_EQ_FMT(4294967295, value_u32, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(0, value_u32, "%d");
 
   // reset buffers
@@ -133,7 +131,7 @@ TEST test_attach_all_types()
   attach_i8("foo",&value_i8);
   publish_i8("foo", 127);
   ASSERT_EQ_FMT(-127, value_i8, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(127, value_i8, "%d");
 
   // reset buffers
@@ -146,7 +144,7 @@ TEST test_attach_all_types()
   attach_i16("qux",&value_i16);
   publish_i16("qux", -32767);
   ASSERT_EQ_FMT(32767, value_i16, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(-32767, value_i16, "%d");
 
   // reset buffers
@@ -159,7 +157,7 @@ TEST test_attach_all_types()
   attach_i32("qux",&value_i32);
   publish_i32("qux", -2147483647);
   ASSERT_EQ_FMT(2147483647, value_i32, "%d");
-  update_telemetry(0);
+  update_telemetry();
   ASSERT_EQ_FMT(-2147483647, value_i32, "%d");
 
   PASS();
