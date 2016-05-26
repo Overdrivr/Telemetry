@@ -5,6 +5,10 @@
 #include "stdint.h"
 #include "telemetry_utils.h"
 
+#define TELEMETRY_VERSION_MAJOR 2
+#define TELEMETRY_VERSION_MINOR 0
+#define TELEMETRY_VERSION_PATCH 0
+
 #define INCOMING_BUFFER_SIZE 128
 #define OUTGOING_BUFFER_SIZE 128
 #define TOPIC_BUFFER_SIZE 64
