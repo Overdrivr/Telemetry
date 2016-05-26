@@ -17,23 +17,19 @@ Data is exchanged on named channels, called *topics* (ex : `foo`, `bar` and `qux
 Sending data is called *publishing*.
 
 ```cpp
-Telemetry TM;
 int32_t i = 123;
-
-TM.pub_i32("foo", i);
+publish_i32("foo", i);
 ```
 
 For receiving data, `Telemetry` lets you attach variables and functions to topics.
 When fresh data is received under a topic, attached variables will be updated and attached functions will be called.
 
 ```cpp
-Telemetry TM;
 float thr;
-
-TM.attach_f32_to("throttle", &thr);
+attach_f32("throttle", &thr);
 
 for(;;) {
-  TM.update();
+  update_telemetry();
 }
 ```
 
@@ -45,6 +41,21 @@ Wrappers for specific platforms are written to provide a plug-and-play manner to
 * [Arduino wrapper](https://github.com/Overdrivr/Telemetry-arduino)
 * [Mbed wrapper](https://github.com/Overdrivr/Telemetry-mbed) (Available also on [Mbed repository](https://developer.mbed.org/users/Overdrivr/code/telemetry/) )
 * Yotta (package manager) - in process
+
+You can also use Telemetry on other platforms.
+
+Since Telemetry is not tied to hardware or IO for the communication, it expects the user to define 4 callback functions to access the communication layer.
+These callback functions are used by Telemetry to:
+* know if it can write outgoing data
+* write outgoing data
+* know if there is incoming data
+* read incoming data
+
+tbd
+```
+TM_transport transport;
+// ..
+```
 
 # Data visualization
 
