@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/bglm8olo8kp8x1wr?svg=true)](https://ci.appveyor.com/project/Overdrivr/telemetry)
 [![Documentation](https://readthedocs.org/projects/telemetry-docs/badge/?version=latest)](http://telemetry-docs.readthedocs.org/en/latest/)
 
-`Current status` *Active development, good stability & test coverage. Documentation in writing*
+`Current status` *Paused development for now, will restart once I find better ways of managing and distributing general-purpose embedded libraries. However, library is functional good stability & test coverage.*
 
 # Overview
 `Telemetry` enables easy communication and data visualization between a computer and any embedded platform, like `ARM Mbed` or `Arduino`.
