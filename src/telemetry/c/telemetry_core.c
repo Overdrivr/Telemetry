@@ -192,7 +192,7 @@ uint16_t payload(const void * p, uint32_t size, uint16_t crc)
 void frame(const char * t, TM_type type, const void * data, uint32_t datasize)
 {
   // start new frame
-  begin();
+  begin_frame();
 
   // header
   uint16_t crc = header(type);
@@ -207,7 +207,7 @@ void frame(const char * t, TM_type type, const void * data, uint32_t datasize)
   append2(crc);
 
   // complete frame
-  uint32_t bytesAmount = end();
+  uint32_t bytesAmount = end_frame();
 
   // send data
   send(outgoingBuffer, bytesAmount);

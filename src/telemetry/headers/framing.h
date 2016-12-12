@@ -9,11 +9,11 @@ void initialize_framing();
 // Set storage for the outgoing frame
 void outgoing_storage(uint8_t * buf, uint32_t bufSize);
 
-void begin();
+void begin_frame();
 void append(uint8_t byte);
 void append2(uint16_t twobytes);
 void append4(uint32_t fourbytes);
-uint32_t end();
+uint32_t end_frame();
 
 // Incoming data
 // Set storage for the incoming data

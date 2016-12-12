@@ -54,7 +54,7 @@ void outgoing_storage(uint8_t * buf, uint32_t bufSize)
   outgoingStorage.size = bufSize;
 }
 
-void begin()
+void begin_frame()
 {
   if(outgoingStorage.size == 0 || outgoingStorage.ptr == NULL)
     return;
@@ -97,7 +97,7 @@ void append4(uint32_t fourbytes)
   append(ptr[3]);
 }
 
-uint32_t end()
+uint32_t end_frame()
 {
   if(outgoingStorage.size == 0 || outgoingStorage.ptr == NULL)
     return 0;
