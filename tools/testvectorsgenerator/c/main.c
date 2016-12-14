@@ -158,6 +158,7 @@ int main()
   newentry(output, "lmnopqrstuv:123"   ,"wxyz");
 
   newentry_u8(output, "bar", 0);
+  newentry_u8(output, "Kp", 1);
   newentry_u8(output, "foo", 255);
   newentry_u8(output, "hello world", 127);
 
