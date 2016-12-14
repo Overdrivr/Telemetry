@@ -8,9 +8,9 @@ TEST framing_simple_frame()
   initialize_framing();
   outgoing_storage(outgoingBuffer,12);
 
-  begin();
+  begin_frame();
   append(0xFF);
-  uint32_t amount = end();
+  uint32_t amount = end_frame();
 
   ASSERT_EQ_FMT(3,amount,"%d");
 
@@ -33,11 +33,11 @@ TEST framing_with_escaping()
   initialize_framing();
   outgoing_storage(outgoingBuffer,12);
 
-  begin();
+  begin_frame();
   append(0xF7);
   append(0x7F);
   append(0x7D);
-  uint32_t amount = end();
+  uint32_t amount = end_frame();
 
   ASSERT_EQ_FMT(8,amount,"%d");
 
@@ -59,10 +59,10 @@ TEST framing_overflow()
   initialize_framing();
   outgoing_storage(outgoingBuffer,3);
 
-  begin();
+  begin_frame();
   append(0xFF);
   append(0xFF);
-  uint32_t amount = end();
+  uint32_t amount = end_frame();
 
   ASSERT_EQ_FMT(0,amount,"%d");
 
