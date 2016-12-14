@@ -298,6 +298,44 @@ TEST publish_int32_neg()
   PASS();
 }
 
+TEST publish_int32_null()
+{
+  TM_state state;
+  uint16_t i;
+  for(i = 0 ; i < OUTGOING_BUFFER_SIZE ; i++)
+  {
+    endBuffer[i] = 0;
+    state.rcvTopic[i] = 0;
+  }
+  sizeWritten = 0;
+  sizeRead = 0;
+  state.rcvInt32 = 0;
+  state.called = 0;
+
+  TM_transport transport;
+  transport.read = read_int;
+  transport.write = write_int;
+  transport.readable = readable_int;
+  transport.writeable = writeable_int;
+
+  char topic[] = "i";
+  int32_t value = 0;
+
+  init_telemetry(&transport);
+
+  subscribe(callback_int,&state);
+
+  publish_i32(topic, value);
+
+  update_telemetry();
+
+  ASSERT_EQ(state.called, 1);
+  ASSERT_STR_EQ(topic,state.rcvTopic);
+  ASSERT_EQ_FMT(value,state.rcvInt32,"%d");
+
+  PASS();
+}
+
 SUITE(pub_sub_int_suite) {
   RUN_TEST(publish_int8);
   RUN_TEST(publish_int8_neg);
@@ -305,4 +343,5 @@ SUITE(pub_sub_int_suite) {
   RUN_TEST(publish_int16_neg);
   RUN_TEST(publish_int32);
   RUN_TEST(publish_int32_neg);
+  RUN_TEST(publish_int32_null);
 }

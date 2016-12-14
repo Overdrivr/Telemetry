@@ -183,8 +183,48 @@ TEST publish_uint32()
   PASS();
 }
 
+
+TEST publish_uint32_bis()
+{
+  TM_state state;
+  uint16_t i;
+  for(i = 0 ; i < OUTGOING_BUFFER_SIZE ; i++)
+  {
+    endBuffer[i] = 0;
+    state.rcvTopic[i] = 0;
+  }
+  sizeWritten = 0;
+  sizeRead = 0;
+  state.rcvUint32 = 0;
+  state.called = 0;
+
+  TM_transport transport;
+  transport.read = read_uint;
+  transport.write = write_uint;
+  transport.readable = readable_uint;
+  transport.writeable = writeable_uint;
+
+  char topic[] = "i";
+  uint32_t value = 0;
+
+  init_telemetry(&transport);
+
+  subscribe(callback_uint,&state);
+
+  publish_u32(topic, value);
+
+  update_telemetry();
+
+  ASSERT_EQ(state.called, 1);
+  ASSERT_STR_EQ(topic,state.rcvTopic);
+  ASSERT_EQ_FMT(value,state.rcvUint32,"%d");
+
+  PASS();
+}
+
 SUITE(pub_sub_uint_suite) {
   RUN_TEST(publish_uint8);
   RUN_TEST(publish_uint16);
   RUN_TEST(publish_uint32);
+  RUN_TEST(publish_uint32_bis);
 }
