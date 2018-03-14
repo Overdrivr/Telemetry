@@ -6,7 +6,7 @@
 `Current status` *Paused development for now, will restart once I find better ways of managing and distributing general-purpose embedded libraries. However, library is functional good stability & test coverage.*
 
 ### `announcement` We are launching [cronobo](https://cronobo.com)
-> A new platform for interacting periodically with embedded devices, collecting their data and visualizing data. Feel free to check it out ! 
+> A new platform for interacting periodically with embedded devices, collecting their data and visualizing it. Feel free to check it out ! 
 
 # Overview
 `Telemetry` enables easy communication and data visualization between a computer and any embedded platform, like `ARM Mbed` or `Arduino`.
