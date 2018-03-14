@@ -69,7 +69,10 @@ struct nlist * install(struct nlist ** hashtab, const char * key, void * ptr, pt
 
         // If allocation failed
         if (np == NULL || (np->key = strdup(key)) == NULL)
+        {
+          free(np);  
           return NULL;
+        }
 
         init_entry(np);
 
