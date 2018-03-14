@@ -39,7 +39,6 @@ void initialize_framing()
   outgoingStorage.size = 0;
 
   incomingStorage.cursor = 0;
-  incomingStorage.cursor = 0;
 
   SOF_ = 0xF7;
   EOF_ = 0x7F;
